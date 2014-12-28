@@ -2,9 +2,8 @@
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 #set_include_path('~/Documents/robotikfp/matomat/www');
-$path = $_SERVER['DOCUMENT_ROOT'];
-$path .= "/common/header.php";
-
+#$path = $_SERVER['DOCUMENT_ROOT'];
+#$path = "../../Documents/robotikfp/matomat/www/";
 include_once 'includes/register.inc.php';
 include_once 'includes/functions.php';
 ?>

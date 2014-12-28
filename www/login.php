@@ -8,7 +8,7 @@
 
 
 
-set_include_path('~/Documents/robotikfp/matomat/www');
+#set_include_path('~/Documents/robotikfp/matomat/www');
 include_once 'includes/db_connect.php';
 include_once 'includes/functions.php';
  
