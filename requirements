@@ -1,0 +1,27 @@
+Database
+	USER(UserID)
+		UserID STRING
+		Guthaben INT
+
+	BESTAND(ArtikelID)
+		ArtikelID
+		Anzahl
+		Preis
+	
+	TRANSAKTIONEN(UserID, ArtikelID, Zeit)
+		UserID
+		ArtikelID
+		Zeit
+
+	evtl ADMIN
+		Username
+		PasswordHash
+
+Use Cases(Benjamin)
+	Transaktionen ansehen
+
+	Guthaben ändern (wahlfrei)
+
+	Guthaben aufladen
+
+	User-Uebersicht mit Filterfunktion
