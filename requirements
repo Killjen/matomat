@@ -1,7 +1,7 @@
 Database
 	USER(UserID)
 		UserID STRING
-		Guthaben INT
+		Balance INT
 
 	BESTAND(ArtikelID)
 		ArtikelID
@@ -38,6 +38,13 @@ TRANSACTIONS
 		ProductID int, 
 		Time DATETIME, 
 		CONSTRAINT pk_Transaction PRIMARY KEY (UserID, ProductID, Time));
+
+users
+	create table users(
+		Username varchar(255) not null,
+		Balance int,
+		PRIMARY KEY(Username));
+
 
 LOGIN (database: secure_login)
 

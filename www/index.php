@@ -19,17 +19,19 @@ sec_session_start();
             <p>Welcome <?php echo htmlentities($_SESSION['username']); ?>!</p>
             <p><a href="includes/logout.php">logout</a></p>
 
-            <h2>Transaction table</h2>
-    <table id="Header">
+
+<!-- #####  transaction table ###########-->
+    <h2>Transactions</h2>
+    <table id="Transactions">
             <tr>
                 <th>Username</th>
-                <th>UserID</th>
+                <th>TransactionID</th>
                 <th>Time</th>
             </tr>
     <?php
     $servername = "localhost";
     $username   = "matomat";
-    $dbpassword   = "matomat94";
+    $dbpassword = "matomat94";
     $dbname     = "matomat";
     $conn = new mysqli($servername, $username, $dbpassword, $dbname);
     //catch failed connections
@@ -48,10 +50,34 @@ sec_session_start();
         }
     }
 
-
-    $conn->close();
+	
     ?>  
     </table>
+<!-- ####################### User Table ###### -->      
+     <h2>Users</h2>
+    <table id="Users">
+            <tr>
+                <th>Username</th>
+                <th>Balance</th>
+            </tr>
+	<?php
+	if($conn->connect_error){
+	        die("Couldn't connect to db: " . $conn->connect_error);}
+	$sql = "SELECT * from users";
+	$result = $conn->query($sql);
+	if ($result->num_rows > 0){
+        //output data in a table
+        while($row = $result->fetch_row()){
+            echo "<tr> ";
+            for($x=0; $x < count($row); $x++){
+                echo "<td> " . $row[$x] . "</td>";
+                }
+            echo "</tr>";
+        }
+    }
+	$conn->close();
+	?>
+	</table>
         <?php else : ?>
             <p>
                 <span class="error">You are not authorized to access this page.</span> Please login:
