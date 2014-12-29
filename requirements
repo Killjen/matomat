@@ -8,12 +8,14 @@ Database
 		Anzahl
 		Preis
 	
-	TRANSAKTIONEN(UserID, ArtikelID, Zeit)
+	TRANSACTIONS(UserID, ProductID, Time)
 		UserID
-		ArtikelID
-		Zeit
+		ProductID	
+		Time
 
-	evtl ADMIN
+	#@Amos trag hier bitte deine DB-Spezifikationen ein, dann kann ich das auf 
+	#meinem System nachmachen. Am besten du machst create.. unten hier, dann können wirs nachher aufm Pi gleich laufen lassen
+	ADMIN
 		Username
 		PasswordHash
 
@@ -25,3 +27,13 @@ Use Cases(Benjamin)
 	Guthaben aufladen
 
 	User-Uebersicht mit Filterfunktion
+
+
+
+TRANSACTIONS
+	create table TRANSACTIONS ( 
+		UserID varchar(255) not null, 
+		ProductID int, 
+		Time DATETIME, 
+		CONSTRAINT pk_Transaction PRIMARY KEY (UserID, ProductID, Time));
+
