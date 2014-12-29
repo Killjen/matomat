@@ -28,25 +28,27 @@ sec_session_start();
             </tr>
     <?php
     $servername = "localhost";
-    $username   = "php";
-    $password   = "matomat94";
+    $username   = "matomat";
+    $dbpassword   = "matomat94";
     $dbname     = "matomat";
-    $conn = new mysqli($servername, $username, $password, $dbname);
+    $conn = new mysqli($servername, $username, $dbpassword, $dbname);
     //catch failed connections
     if($conn->connect_error){
         die("Couldn't connect to db: " . $conn->connect_error);}
-    $sql = "SELECT * from TRANSACTIONS";
+    $sql = "SELECT * from transactions";
     $result = $conn->query($sql);
     if ($result->num_rows > 0){
         //output data in a table
         while($row = $result->fetch_row()){
             echo "<tr> ";
             for($x=0; $x < count($row); $x++){
-                echo "<td> " . $row[$x] . "</td>";  
+                echo "<td> " . $row[$x] . "</td>";
                 }
             echo "</tr>";
         }
     }
+
+
     $conn->close();
     ?>  
     </table>
