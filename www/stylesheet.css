@@ -188,3 +188,6 @@ div#info h1{height:10px;line-height:10px;margin:0}
 */
 div#footer{background:#BFBD93;position: fixed;z-index: 1000;left:0;bottom: 0; min-width: 700px; width: 100%}
 div#footer p{margin:0;padding:5px 10px}
+
+div#search{float:right;min-width:150px; max-width: 300px}
+div#search{background:linear-gradient( #eaebec, #BFBD93);position: fixed;z-index: 10;right: 0; top: 0; height: 100%;}
