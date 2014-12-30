@@ -66,7 +66,7 @@ sec_session_start();
 	if ($result->num_rows > 0){
         //output data in a table
         while($row = $result->fetch_row()){
-            echo "<tr onclick='setName(this)'> ";
+            echo "<tr>"; #deprecated:  onclick='setName(this)'> ";
             for($x=0; $x < count($row); $x++){
                 echo "<td> " . $row[$x] . "</td>";
                 }
@@ -80,17 +80,21 @@ sec_session_start();
 	<form action="addMoney.php" method="post">
 	Name: <input type="text" name="username" id="username" value="Click on a column!"><br>
 	Add(€) : <input type="text" name="amount"><br>
-	<input type="submit">
+	<input type="submit" value="Charge">
 	</form>
 
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 	<script>
-	function setName(row) {
-		document.getElementById("username").value=row.cells[0].innerHTML;
-	}
+	
+	//function setName(row) {
+	//	document.getElementById("username").value=row.cells[0].innerHTML;
+	//}
+	$(document).ready(function(){
+		$("#Users tr").click(function(){
+			$("#username").val(this.cells[0].innerHTML);
+			});
+		});
 
-	window.onload = function(){
-		var table = document.getElementById("Users");
-	};
 	</script>
 	
 
