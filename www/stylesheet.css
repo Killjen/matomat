@@ -172,6 +172,9 @@ table tr:hover td{
 	background: -moz-linear-gradient(top,  #f2f2f2,  #f0f0f0);	
 }
 
+#Users {
+	float: left;
+}
 /*div#header{position: relative;background-color:#eaebec;margin: 0 auto;}
 div#header h1{height:80px;line-height:80px;margin:0;padding-left:10px;}
 div#header{min-width: 700px; width: 100%}

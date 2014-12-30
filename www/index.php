@@ -68,7 +68,7 @@ sec_session_start();
         while($row = $result->fetch_row()){
             echo "<tr>"; #deprecated:  onclick='setName(this)'> ";
             for($x=0; $x < count($row); $x++){
-                echo "<td> " . $row[$x] . "</td>";
+                echo "<td>" . $row[$x] . "</td>";
                 }
             echo "</tr>";
         }
