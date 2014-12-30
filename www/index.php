@@ -54,21 +54,19 @@ sec_session_start();
     ?>  
     </table>
 <!-- ####################### User Table ###### -->      
-     <h2>Users</h2>
+     <h2 id="header">Users</h2>
     <table id="Users">
             <tr>
                 <th>Username</th>
                 <th>Balance</th>
             </tr>
 	<?php
-	if($conn->connect_error){
-	        die("Couldn't connect to db: " . $conn->connect_error);}
 	$sql = "SELECT * from users";
 	$result = $conn->query($sql);
 	if ($result->num_rows > 0){
         //output data in a table
         while($row = $result->fetch_row()){
-            echo "<tr> ";
+            echo "<tr>"; #deprecated:  onclick='setName(this)'> ";
             for($x=0; $x < count($row); $x++){
                 echo "<td> " . $row[$x] . "</td>";
                 }
@@ -78,6 +76,29 @@ sec_session_start();
 	$conn->close();
 	?>
 	</table>
+
+	<form action="addMoney.php" method="post">
+	Name: <input type="text" name="username" id="username" value="Click on a column!"><br>
+	Add(€) : <input type="text" name="amount"><br>
+	<input type="submit" value="Charge">
+	</form>
+
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script>
+	
+	//function setName(row) {
+	//	document.getElementById("username").value=row.cells[0].innerHTML;
+	//}
+	$(document).ready(function(){
+		$("#Users tr").click(function(){
+			$("#username").val(this.cells[0].innerHTML);
+			});
+		});
+
+	</script>
+	
+
+<!--security footer -->
         <?php else : ?>
             <p>
                 <span class="error">You are not authorized to access this page.</span> Please login:
