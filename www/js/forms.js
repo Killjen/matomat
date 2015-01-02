@@ -1,7 +1,7 @@
 function formhash(form, password) {
     // Create a new element input, this will be our hashed password field. 
     var p = document.createElement("input");
- 
+    
     // Add the new element to our form. 
     form.appendChild(p);
     p.name = "p";
@@ -76,4 +76,53 @@ function regformhash(form, uid, email, password, conf) {
     // Finally submit the form. 
     form.submit();
     return true;
+}
+
+function post(path, params, method) {
+    method = method || "post"; // Set method to post by default if not specified.
+
+    // The rest of this code assumes you are not using a library.
+    // It can be made less wordy if you use one.
+    var form = document.createElement("form");
+    form.setAttribute("method", method);
+    form.setAttribute("action", path);
+
+    for(var key in params) {
+        if(params.hasOwnProperty(key)) {
+            var hiddenField = document.createElement("input");
+            hiddenField.setAttribute("type", "hidden");
+            hiddenField.setAttribute("name", key);
+            hiddenField.setAttribute("value", params[key]);
+
+            form.appendChild(hiddenField);
+         }
+    }
+
+    document.body.appendChild(form);
+    form.submit();
+    return true;
+}
+
+function changeTable(table, i, name, x){
+   // window.alert("HALLO!")
+    var n = i.toString() + " " + x.toString();
+    
+    var y=document.getElementsByName(n);
+    //get changed row:
+    //var y=y[i].cells
+    //get changed cell:
+    //var y=y[x]
+    
+    var params = new Array(); 
+    params["username"] = name;
+    if(x==0) { //username changed
+        params["newusername"] = y[0].value;
+
+    } else { //assume x=1, balance changed
+        params["balance"] = y[0].value;
+        //window.alert(y[0].value);
+    }
+
+    //now post to processTableChange.php:
+    post("includes/processTableChange.php", params);
 }
