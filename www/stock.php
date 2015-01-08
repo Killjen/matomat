@@ -26,71 +26,44 @@ sec_session_start();
             <div id="header"><h1>MATOMAT Admin-Schnittstelle</h1></div>
               <<div id="wrapper">-->
                 <div id="content">
- <!-- ####################### User Table ###### -->      
-                    <h2>Users</h2>
-                    <table id="Users">
+                  <!--content here-->
+ 		<h2>Stock</h2>
+                  <table id="Header">
                             <tr>
-                                <th>Username</th>
-                                <th>Balance</th>
-                            </tr>
-                    <?php
+                                <th>Article</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
+                            </tr>                   
+		<?php
                     $servername = "localhost";
                     $username   = "matomat";
                     $dbpassword = "matomat94";
                     $dbname     = "matomat";
                     $conn = new mysqli($servername, $username, $dbpassword, $dbname);
- 		    $users_username = filter_input(INPUT_POST, 'users_username', FILTER_SANITIZE_STRING);
+                   //catch failed connections
                     if($conn->connect_error){
-                            die("Couldn't connect to db: " . $conn->connect_error);
-                    }
-                    if (empty($users_username)){
-                        $sql = "SELECT * from users";
-                    } else {
-                        $sql = "SELECT * from users WHERE Username LIKE \"$users_username%\"";
-                    }
+                        die("Couldn't connect to db: " . $conn->connect_error);}
+	            
+		    $sql = "SELECT * from stock";
                     $result = $conn->query($sql);
                     if ($result->num_rows > 0){
                         //output data in a table
-                        //is edible, so we count which row is displayed:
-                        $i = 0;
                         while($row = $result->fetch_row()){
                             echo "<tr>";
-                            for($x=0; $x < count($row); $x++){                             
-                                echo "<td><input type='text' name='$i $x' onkeypress=\"if(event.keyCode==13) {changeTable('Users',$i,'$row[0]',$x);}\" value='". $row[$x] . "'></td>";
+                            for($x=0; $x < count($row); $x++){
+                                echo "<td>" . $row[$x] . "</td>";
                                 }
-			    echo "<td>X</td>";
                             echo "</tr>";
-                            $i = $i + 1;
                         }
-                        
                     }
+
                     $conn->close();
-                    ?>
+                    ?>  
                     </table>
 	<form action="delUser.php" method="post" style="hidden" id="deluserform">
 	 <input type="hidden" name="username" id="delusername"><br>
 	</form>
                 </div>
-<!-- scripts for addMoney-Form and delUser-Form-->
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-	
-	<script>
-		$(document).ready(function(){
-		$("#Users tr td").click(function(){
-		var parent = $(this).parent()[0];
-			if($(this).is(":last-child")){
-				var user =  parent.cells[0].firstChild.value; 
-				if(confirm("Do you really want to delete the user \n" + user + "?")){
-					$("#delusername").val(user);
-					$("#deluserform").submit();
-				}
-			}
-			$("#addusername").val(parent.cells[0].firstChild.value);	
-		});
-	});
-
-	</script>
-
             <!-- ########################### navigation#####-->
             <div id="navigation">
                 <h1>MATOMAT</h1>
@@ -108,17 +81,6 @@ sec_session_start();
               </ul>
             </div>
             <div id="search">
-                <form action="index.php" method="post" name="search_form">                      
-                Search User table: <input type="text" name="users_username" id="users_username"/>
-                <input type="submit" 
-                       value="Search"/> 
-                </form>
-		<hr  \>
-		<form action="addMoney.php" method="post">
-			Name: <input type="text" name="username" id="addusername" value="Click on a column!"><br>
-			Add(€) : <input type="text" name="amount"><br>
-			<input type="submit" value="Charge">
-		</form>
             </div>
 	
 		

@@ -14,14 +14,14 @@
 		die("Either your input was no number or too high (over 50€)");	
 	}
 	$sql = "UPDATE users SET Balance=Balance+" . $_POST['amount'] . " where Username='". $_POST["username"]."'";
-    	if ($conn->query($sql)==true){
-		echo "Successfully updated existing table!";
+#this statement is not working for wrong(empty) usernames. needs to be fixed
+	    	if ($conn->query($sql)==true){
+		header("Location: index.php");
    	 }	
 	 else{
 		echo "Error: No entries were updated!"	; 
 	 }
 	 $conn->close();
-   	 ?>
-	 <a href="index.php">Back</a>
+	 ?>
 </body>
 </html>	  

@@ -40,7 +40,7 @@ if (isset($_POST['username'])) {
         die("Error: No entries were updated!"); 
     }
     // get back
-    header('Location: ../admin.php');
+    header('Location: ../index.php');
     
 } else {
     // The correct POST variables were not sent to this page. 

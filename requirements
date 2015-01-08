@@ -3,10 +3,10 @@ Database
 		UserID STRING
 		Balance INT
 
-	BESTAND(ArtikelID)
-		ArtikelID
-		Anzahl
-		Preis
+	stock(ArticleID)
+		ArticleID
+		Quantity
+		Price
 	
 	TRANSACTIONS(UserID, ProductID, Time)
 		UserID
@@ -38,11 +38,17 @@ TRANSACTIONS
 		ProductID int, 
 		Time DATETIME, 
 		CONSTRAINT pk_Transaction PRIMARY KEY (UserID, ProductID, Time));
+	create table stock( 
+		Article varchar(255) not null, 
+		Quantity int, 
+		Price	float, 
+		PRIMARY KEY (ArticleID));
+
 
 users
 	create table users(
 		Username varchar(255) not null,
-		Balance int,
+		Balance float,
 		PRIMARY KEY(Username));
 
 
