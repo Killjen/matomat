@@ -1,6 +1,4 @@
 transactions:aufladen integrieren
-user tabelle: IDs hinzufügen 
-
 
 Log mit letzem unbekanntem User.
 Add User Button.
@@ -8,9 +6,10 @@ Stock refillen.
 
 
 Database
-	USER(UserID)
-		UserID STRING
+	users(Username)
+		Username STRING
 		Balance INT
+		UserID STRING
 
 	stock(ArticleID)
 		ArticleID
@@ -56,6 +55,7 @@ users
 	create table users(
 		Username varchar(255) not null,
 		Balance float,
+		UserID varchar(255),
 		PRIMARY KEY(Username));
 
 
