@@ -26,6 +26,7 @@ if (isset($_POST['username'])) {
     $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING);
     $newusername = filter_input(INPUT_POST, 'newusername', FILTER_SANITIZE_STRING);
     $balance = filter_input(INPUT_POST, 'balance', FILTER_SANITIZE_NUMBER_INT);
+    $userid = filter_input(INPUT_POST, 'userid', FILTER_SANITIZE_STRING);
     
     if ($newusername){
         $sql = "UPDATE users SET Username='$newusername' WHERE Username='$username';";
@@ -33,7 +34,9 @@ if (isset($_POST['username'])) {
     if ($balance){
         $sql = "UPDATE users SET Balance=$balance WHERE Username='$username';";
     }             
- 
+	if($userid){
+		$sql = "UPDATE users SET UserID='$userid' WHERE Username='$username';";	
+	} 
     if ($conn->query($sql)==true){
         echo "Successfully updated existing table!";
     }  else {

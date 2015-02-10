@@ -102,7 +102,11 @@ function post(path, params, method) {
     form.submit();
     return true;
 }
-
+/*@table name of table
+@i number of row in table
+@name username(first entry in a row)
+@x number of column
+*/
 function changeTable(table, i, name, x){
    // window.alert("HALLO!")
     var n = i.toString() + " " + x.toString();
@@ -118,9 +122,11 @@ function changeTable(table, i, name, x){
     if(x==0) { //username changed
         params["newusername"] = y[0].value;
 
-    } else { //assume x=1, balance changed
+    } else if(x==1) { //balance changed
         params["balance"] = y[0].value;
-        //window.alert(y[0].value);
+
+    }else { //assume x=2, userid changed
+        params["userid"] = y[0].value;
     }
 
     //now post to processTableChange.php:

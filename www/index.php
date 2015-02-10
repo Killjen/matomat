@@ -32,6 +32,7 @@ sec_session_start();
                             <tr>
                                 <th>Username</th>
                                 <th>Balance</th>
+			    	<th>UserID</th>
                             </tr>
                     <?php
                     $servername = "localhost";

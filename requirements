@@ -1,3 +1,12 @@
+transactions:aufladen integrieren
+user tabelle: IDs hinzufügen 
+
+
+Log mit letzem unbekanntem User.
+Add User Button.
+Stock refillen.
+
+
 Database
 	USER(UserID)
 		UserID STRING
@@ -13,8 +22,6 @@ Database
 		ProductID	
 		Time
 
-	#@Amos trag hier bitte deine DB-Spezifikationen ein, dann kann ich das auf 
-	#meinem System nachmachen. Am besten du machst create.. unten hier, dann können wirs nachher aufm Pi gleich laufen lassen
 	ADMIN
 		Username
 		PasswordHash
