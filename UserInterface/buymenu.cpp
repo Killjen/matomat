@@ -6,7 +6,6 @@ BuyMenu::BuyMenu(QWidget *parent) :
     ui(new Ui::BuyMenu)
 {
     ui->setupUi(this);
-
 }
 
 BuyMenu::~BuyMenu()
@@ -27,7 +26,7 @@ void BuyMenu::setUpBuyMenu(dbEntry* p_entry){
 
     //set up account info on top right
     this->ui->username->setText(p_entry->username);
-    this->ui->balance->setText(QString::number((p_entry->balance)));
+    this->ui->balance->setText(QString::number((p_entry->balance)) + QString::fromUtf8("€"));
 
 
     //set up all purchasable articles as buttons (by accessing the stock table in our db)
@@ -41,7 +40,7 @@ void BuyMenu::setUpBuyMenu(dbEntry* p_entry){
     while(query.next()){
         qDebug() << "adding button to buymenu";
         _buttonList.append(new QPushButton(query.value(0).toString()));
-        _labelList.append(new QLabel(query.value(1).toString() + " €" ));
+        _labelList.append(new QLabel(query.value(1).toString() + QString::fromUtf8("€")));
         _buttonList[i]->setObjectName(query.value(2).toString());
         if(query.value(3).toString() != ""){
             /*QPixmap pixmap("/var/www/"+query.value(3).toString());

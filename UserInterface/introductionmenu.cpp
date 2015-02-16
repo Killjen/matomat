@@ -6,7 +6,6 @@ IntroductionMenu::IntroductionMenu(QWidget *parent) :
     ui(new Ui::IntroductionMenu)
 {
     ui->setupUi(this);
-
 }
 
 IntroductionMenu::~IntroductionMenu()

@@ -34,7 +34,7 @@ int createDBConnection(){
     db.setHostName("localhost");
     db.setDatabaseName("matomat");
     db.setUserName("matomat");
-    db.setPassword("matomat94");
+    db.setPassword("kumArz0OfAt");
     if(!db.open()){
         qDebug() << "Database could not be opened";
         return 0;

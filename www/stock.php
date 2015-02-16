@@ -53,11 +53,7 @@ sec_session_start();
                                 <th>LogoPath</th>
                             </tr>                   
 		<?php
-                    $servername = "localhost";
-                    $username   = "matomat";
-                    $dbpassword = "matomat94";
-                    $dbname     = "matomat";
-                    $conn = new mysqli($servername, $username, $dbpassword, $dbname);
+                    $conn = $mMysqli;
                    //catch failed connections
                     if($conn->connect_error){
                         die("Couldn't connect to db: " . $conn->connect_error);}

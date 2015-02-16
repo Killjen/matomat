@@ -8,11 +8,7 @@ sec_session_start();
 
         <?php if (login_check($mysqli) == true) : ?>
         <?php
-        $servername = "localhost";
-        $dbusername   = "matomat";
-        $dbpassword = "matomat94";
-        $dbname     = "matomat";
-        $conn = new mysqli($servername, $dbusername, $dbpassword, $dbname);
+        $conn = $mMysqli;
 
         $userid = filter_input(INPUT_POST, 'userid', FILTER_SANITIZE_STRING);
         $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING);

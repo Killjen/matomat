@@ -6,7 +6,6 @@ CompletionMenu::CompletionMenu(QWidget *parent) :
     ui(new Ui::CompletionMenu)
 {
     ui->setupUi(this);
-
 }
 
 CompletionMenu::~CompletionMenu()
@@ -27,7 +26,8 @@ void CompletionMenu::setUpCompletionMenu(QMutex* p_lock, dbEntry *p_entry, int b
     }
     query1.next();
 
-    float price = query1.value("Price").toFloat();
+    //Careful: qt4 Sql uses int indices of columns not names!
+    float price = query1.value(3).toFloat();
     qDebug() << "price is " + QString::number(price);
 
     //conduct actual purchase
@@ -41,7 +41,7 @@ void CompletionMenu::setUpCompletionMenu(QMutex* p_lock, dbEntry *p_entry, int b
     QString strTime = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
     QString str =  "INSERT INTO transactions (Username, ArticleID, ArticleName, Payed, Time) "
                    "VALUES ('" + p_entry->username + "', " + QString::number(buttonID) + ", '"
-                   + query1.value("ArticleName").toString() +"', " + QString::number(price) + ", '" + strTime + "')";
+                   + query1.value(1).toString() +"', " + QString::number(price) + ", '" + strTime + "')";
     query3.exec(str);
     //may fail bc feature not available
     if (query3.numRowsAffected()==0){

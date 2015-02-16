@@ -9,11 +9,8 @@ sec_session_start();
 <body>
         <?php if (login_check($mysqli) == true) : ?>
         <?php
-        $servername = "localhost";
-        $dbusername   = "matomat";
-        $dbpassword = "matomat94";
-        $dbname     = "matomat";
-        $conn = new mysqli($servername, $dbusername, $dbpassword, $dbname);
+        
+        $conn = $mMysqli;
         //catch failed connections
 
         $articleid = filter_input(INPUT_POST, 'articleid', FILTER_SANITIZE_NUMBER_INT);

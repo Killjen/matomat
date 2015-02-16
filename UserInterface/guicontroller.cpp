@@ -48,7 +48,7 @@ void GUIController::displayIntroductionMenu(){
     this->p_entry->userID       =   "";
     p_buyMenu->hide();
     p_compMenu->hide();
-    p_introMenu->show();
+    p_introMenu->showFullScreen();
     return;
 }
 
@@ -63,7 +63,7 @@ void GUIController::displayBuyMenu(){
     p_buyTimer->setObjectName(p_entry->userID);
     p_buyTimer->start();
 
-    p_buyMenu->show();
+    p_buyMenu->showFullScreen();
 }
 
 void GUIController::displayCompletionMenu(int buttonID){
@@ -77,7 +77,7 @@ void GUIController::displayCompletionMenu(int buttonID){
         p_compTimer->start();
     p_lock->unlock();
 
-    p_compMenu->show();
+    p_compMenu->showFullScreen();
 
 }
 

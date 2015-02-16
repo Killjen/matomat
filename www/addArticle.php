@@ -9,11 +9,7 @@ sec_session_start();
 <body>
         <?php if (login_check($mysqli) == true) : ?>
         <?php
-        $servername = "localhost";
-        $dbusername   = "matomat";
-        $dbpassword = "matomat94";
-        $dbname     = "matomat";
-        $conn = new mysqli($servername, $dbusername, $dbpassword, $dbname);
+        $conn = $mMysqli;
         $articlename = filter_input(INPUT_POST, 'articlename', FILTER_SANITIZE_STRING);
         $quantity = filter_input(INPUT_POST, 'quantity', FILTER_SANITIZE_NUMBER_INT);
         $price = filter_input(INPUT_POST, 'price', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);

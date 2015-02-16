@@ -9,11 +9,7 @@ sec_session_start();
 <body>
         <?php if (login_check($mysqli) == true) : ?>
     	<?php
-    	$servername = "localhost";
-    	$dbusername   = "matomat";
-    	$dbpassword = "matomat94";
-    	$dbname     = "matomat";
-    	$conn = new mysqli($servername, $dbusername, $dbpassword, $dbname);
+    	$conn = $mMysqli;
 
         $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING);
         $amount= filter_input(INPUT_POST, 'amount', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);

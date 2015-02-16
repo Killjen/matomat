@@ -19,7 +19,7 @@ sec_session_start();
         <script type="text/JavaScript" src="js/forms.js"></script> 
     </head>
     <body>
-        <?php if (login_check($mysqli) == true) : ?>
+        <?php if(login_check($mysqli) == true) : ?>
         <!-- Registration form to be output if the POST variables are not
         set or if the registration script caused an error. -->
         <h1>Register with us</h1>
@@ -64,7 +64,7 @@ sec_session_start();
         </form>
         <p>Return to the <a href="index.php">login page</a>.</p>
         <p>Login-System by <a href="www.wikihow.com">WikiHow</a>: <a href="http://www.wikihow.com/Create-a-Secure-Login-Script-in-PHP-and-MySQL">Secure Login Script</a></p>
-        <?php else : ?>
+        <?php else : ?>	
             <p>
                 <span class="error">You are not authorized to access this page.</span> Please login:
             </p>
@@ -78,6 +78,6 @@ sec_session_start();
                    value="Login" 
                    onclick="formhash(this.form, this.form.password);" /> 
             </form>
-        <?php endif; ?>
+        <?php endif ; ?>
     </body>
 </html>

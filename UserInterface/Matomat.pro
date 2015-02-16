@@ -28,5 +28,5 @@ FORMS    += introductionmenu.ui \
     buymenu.ui \
     completionmenu.ui
 
-QT += serialport
+CONFIG+= serialport
 QT += sql

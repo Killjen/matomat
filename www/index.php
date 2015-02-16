@@ -51,11 +51,7 @@ sec_session_start();
 			    	<th>UserID</th>
                             </tr>
                     <?php
-                    $servername = "localhost";
-                    $username   = "matomat";
-                    $dbpassword = "matomat94";
-                    $dbname     = "matomat";
-                    $conn = new mysqli($servername, $username, $dbpassword, $dbname);
+                    $conn = $mMysqli;
  		            $users_username = filter_input(INPUT_POST, 'users_username', FILTER_SANITIZE_STRING);
                     if($conn->connect_error){
                             die("Couldn't connect to db: " . $conn->connect_error);
