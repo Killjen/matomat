@@ -6,6 +6,7 @@ CompletionMenu::CompletionMenu(QWidget *parent) :
     ui(new Ui::CompletionMenu)
 {
     ui->setupUi(this);
+
 }
 
 CompletionMenu::~CompletionMenu()
@@ -54,6 +55,16 @@ void CompletionMenu::setUpCompletionMenu(QMutex* p_lock, dbEntry *p_entry, int b
     if (query4.numRowsAffected() <= 0){
         qDebug() << "failed to update stock";
     }
+
+    //servo control goes here
+
+
+    softServoWrite(0, 200);
+    delay(1000);
+    softServoWrite(0,0);
+    delay(1000);
+    softServoWrite(0,200);
+
 
     p_lock->unlock();
 }

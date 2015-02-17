@@ -16,17 +16,29 @@ SOURCES += main.cpp\
         introductionmenu.cpp \
     buymenu.cpp \
     completionmenu.cpp \
-    guicontroller.cpp
+    guicontroller.cpp \
+    unknownidform.cpp \
+    softServo.c
 
 HEADERS  += introductionmenu.h \
     buymenu.h \
     completionmenu.h \
     dbentry.h \
-    guicontroller.h
+    guicontroller.h \
+    unknownidform.h \
+    wiringPi.h \
+    softServo.h
 
 FORMS    += introductionmenu.ui \
     buymenu.ui \
-    completionmenu.ui
+    completionmenu.ui \
+    unknownidform.ui
 
 CONFIG+= serialport
 QT += sql
+
+
+unix:!macx:!symbian: LIBS += -L$$PWD/../../../../usr/lib/ -lwiringPi
+
+INCLUDEPATH += $$PWD/../../../../usr/include
+DEPENDPATH += $$PWD/../../../../usr/include
