@@ -12,8 +12,9 @@ sec_session_start();
 <html>
     <head>
         <meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Admin-Schnittstelle</title>
-        <link rel="stylesheet" href="stylesheet.css" />
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
         <script type="text/JavaScript" src="js/sha512.js"></script> 
         <script type="text/JavaScript" src="js/forms.js"></script> 
 
@@ -21,13 +22,30 @@ sec_session_start();
     <body>
         <?php if (login_check($mysqli) == true) : ?>
 
-
-        <!--<div id="container">-
-            <div id="header"><h1>MATOMAT Admin-Schnittstelle</h1></div>
-              <<div id="wrapper">-->
-                <div id="content">
-                  <!--content here-->
-                  <h2>Transactions</h2>
+        <div id="content">  
+	<div class="container-fluid">
+<!-- ########################### navigation#####-->
+	<div class="row">
+	<div class="col-sm-3">
+            <div id="navigation">
+                <h1>MATOMAT</h1>
+                <hr \>
+                <p><i>Welcome <?php echo htmlentities($_SESSION['username']); ?>!</i></p>
+                <ul>
+                  <li><a href="index.php">Users</a></li>
+                  <li><a href="stock.php">Stock</a></li>
+                  <li><a href="transactions.php">Transactions</a></li>
+                </ul>
+                <hr \>
+                <ul>
+                    <li><p><a href="includes/logout.php">logout</a></p></li>
+              </ul>
+            </div>
+	</div>
+	
+ <!-- ####################### User Table ###### -->      
+		  <div class= "col-sm-6">
+	 	  <h2>Transactions</h2>
                   <table id="Header">
                             <tr>
                                 <th>Username</th>
@@ -72,28 +90,10 @@ sec_session_start();
                     $conn->close();
                     ?>  
                     </table>
-           
-	<form action="delUser.php" method="post" style="hidden" id="deluserform">
-	 <input type="hidden" name="username" id="delusername"><br>
-	</form>
-                </div>
-	
-            <!-- ########################### navigation#####-->
-            <div id="navigation">
-                <h1>MATOMAT</h1>
-                <hr \>
-                <p><i>Welcome <?php echo htmlentities($_SESSION['username']); ?>!</i></p>
-                <ul>
-                  <li><a href="index.php">Users</a></li>
-                  <li><a href="stock.php">Stock</a></li>
-                  <li><a href="transactions.php">Transactions</a></li>
-                </ul>
-                <hr \>
-                <ul>
-                    <li><p><a href="includes/logout.php">logout</a></p></li>
-              </ul>
-            </div>
-            <div id="search">
+</div>
+<div class="col-sm-3">
+ <!-- ########################### search stuff#####-->
+           <div id="search">
 		<form action="transactions.php" method="post" name="search_form">                      
                 Filter Transactions:<br>
 		Username<input type="text" name="transactions_username" id="transactions_username"/><br>
@@ -104,12 +104,15 @@ sec_session_start();
 
 		<hr  \>
             </div>
-	
+	</div>
+</div>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
 		
             <div id="footer">
                <p>Robotik Fortgeschrittenenpraktikum | Mat-o-Mat | WS 2014/15 | von Jakob Schmid und Amos Treiber</p>
             </div>
-        <!--</div>-->
 
           
     
@@ -128,5 +131,6 @@ sec_session_start();
                    onclick="formhash(this.form, this.form.password);" /> 
             </form>
         <?php endif; ?>
+    </div>
     </body>
 </html>

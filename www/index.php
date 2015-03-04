@@ -12,8 +12,9 @@ sec_session_start();
 <html>
     <head>
         <meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Admin-Schnittstelle</title>
-        <link rel="stylesheet" href="stylesheet.css" />
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
         <script type="text/JavaScript" src="js/sha512.js"></script> 
         <script type="text/JavaScript" src="js/forms.js"></script> 
 
@@ -21,13 +22,30 @@ sec_session_start();
     <body>
         <?php if (login_check($mysqli) == true) : ?>
 
-
-        <!--<div id="container">-
-            <div id="header"><h1>MATOMAT Admin-Schnittstelle</h1></div>
-              <<div id="wrapper">-->
-                <div id="content">
+        <div id="content">  
+	<div class="container-fluid">
+<!-- ########################### navigation#####-->
+	<div class="row">
+	<div class="col-sm-3">
+            <div id="navigation">
+                <h1>MATOMAT</h1>
+                <hr \>
+                <p><i>Welcome <?php echo htmlentities($_SESSION['username']); ?>!</i></p>
+                <ul>
+                  <li><a href="index.php">Users</a></li>
+                  <li><a href="stock.php">Stock</a></li>
+                  <li><a href="transactions.php">Transactions</a></li>
+                </ul>
+                <hr \>
+                <ul>
+                    <li><p><a href="includes/logout.php">logout</a></p></li>
+              </ul>
+            </div>
+	</div>
+	
  <!-- ####################### User Table ###### -->      
-                    <h2>Users</h2>
+		    <div class= "col-sm-6">
+		    <h2>Users</h2>
                     <table id="Users">
                             <tr>
                                 <th>Username</th>
@@ -68,13 +86,26 @@ sec_session_start();
                     $conn->close();
                     ?>
                     </table>
+</div>
+	<div class="col-sm-3">
+                <form action="index.php" method="post" name="search_form">                      
+                Search User table: <input type="text" name="users_username" id="users_username"/>
+                <input type="submit" 
+                       value="Search"/> 
+                </form>
+		<hr  \>
+		<form action="addMoney.php" method="post">
+			Name: <input type="text" name="username" id="addusername" value="Click on a column!"><br>
+			Add(€) : <input type="text" name="amount"><br>
+			<input type="submit" value="Charge">
+		</form>
+	</div>
+</div>
 	<form action="delUser.php" method="post" style="hidden" id="deluserform">
 	 <input type="hidden" name="username" id="delusername"><br>
 	</form>
-                </div>
-<!-- scripts for addMoney-Form and delUser-Form-->
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-	
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 	<script>
 		$(document).ready(function(){
 		$("#Users tr td").click(function(){
@@ -92,41 +123,10 @@ sec_session_start();
 
 	</script>
 
-            <!-- ########################### navigation#####-->
-            <div id="navigation">
-                <h1>MATOMAT</h1>
-                <hr \>
-                <p><i>Welcome <?php echo htmlentities($_SESSION['username']); ?>!</i></p>
-                <ul>
-                  <li><a href="index.php">Users</a></li>
-                  <li><a href="stock.php">Stock</a></li>
-                  <li><a href="transactions.php">Transactions</a></li>
-                </ul>
-                <hr \>
-               <!-- <p><strong>Navigation</strong></p>-->
-                <ul>
-                    <li><p><a href="includes/logout.php">logout</a></p></li>
-              </ul>
-            </div>
-            <div id="search">
-                <form action="index.php" method="post" name="search_form">                      
-                Search User table: <input type="text" name="users_username" id="users_username"/>
-                <input type="submit" 
-                       value="Search"/> 
-                </form>
-		<hr  \>
-		<form action="addMoney.php" method="post">
-			Name: <input type="text" name="username" id="addusername" value="Click on a column!"><br>
-			Add(€) : <input type="text" name="amount"><br>
-			<input type="submit" value="Charge">
-		</form>
-            </div>
-	
 		
             <div id="footer">
                <p>Robotik Fortgeschrittenenpraktikum | Mat-o-Mat | WS 2014/15 | von Jakob Schmid und Amos Treiber</p>
             </div>
-        <!--</div>-->
 
           
     
@@ -145,5 +145,6 @@ sec_session_start();
                    onclick="formhash(this.form, this.form.password);" /> 
             </form>
         <?php endif; ?>
+    </div>
     </body>
 </html>
