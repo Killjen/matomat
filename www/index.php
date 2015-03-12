@@ -12,9 +12,9 @@ sec_session_start();
 <html>
     <head>
         <meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
+	   <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Admin-Schnittstelle</title>
-	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+	   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
         <script type="text/JavaScript" src="js/sha512.js"></script> 
         <script type="text/JavaScript" src="js/forms.js"></script> 
 
@@ -38,6 +38,7 @@ sec_session_start();
                 </ul>
                 <hr \>
                 <ul>
+                    <li><a href="register.php">Register new Admin</a></li>
                     <li><p><a href="includes/logout.php">logout</a></p></li>
               </ul>
             </div>
@@ -58,7 +59,7 @@ sec_session_start();
                     $dbpassword = "matomat94";
                     $dbname     = "matomat";
                     $conn = new mysqli($servername, $username, $dbpassword, $dbname);
- 		    $users_username = filter_input(INPUT_POST, 'users_username', FILTER_SANITIZE_STRING);
+ 		            $users_username = filter_input(INPUT_POST, 'users_username', FILTER_SANITIZE_STRING);
                     if($conn->connect_error){
                             die("Couldn't connect to db: " . $conn->connect_error);
                     }
@@ -75,7 +76,7 @@ sec_session_start();
                         while($row = $result->fetch_row()){
                             echo "<tr>";
                             for($x=0; $x < count($row); $x++){                             
-                                echo "<td><input type='text' name='$i $x' onkeypress=\"if(event.keyCode==13) {changeTable('Users',$i,'$row[0]',$x);}\" value='". $row[$x] . "'></td>";
+                                echo "<td><input type='text' name='$i $x' onkeypress=\"if(event.keyCode==13) {changeUser($i,'$row[0]',$x);}\" value='". $row[$x] . "'></td>";
                                 }
 			    echo "<td>X</td>";
                             echo "</tr>";
@@ -95,7 +96,7 @@ sec_session_start();
                 </form>
 		<hr  \>
 		<form action="addMoney.php" method="post">
-			Name: <input type="text" name="username" id="addusername" value="Click on a column!"><br>
+			Name: <input type="text" name="username" id="addusername" value="Click on a row!"><br>
 			Add(€) : <input type="text" name="amount"><br>
 			<input type="submit" value="Charge">
 		</form>

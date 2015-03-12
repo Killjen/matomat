@@ -38,6 +38,7 @@ sec_session_start();
                 </ul>
                 <hr \>
                 <ul>
+                    <li><a href="register.php">Register new Admin</a></li>
                     <li><p><a href="includes/logout.php">logout</a></p></li>
               </ul>
             </div>
@@ -46,9 +47,10 @@ sec_session_start();
  <!-- ####################### User Table ###### -->      
 		  <div class= "col-sm-6">
 	 	  <h2>Stock</h2>
-                  <table id="Header">
+                  <table id="Stock">
                             <tr>
-                                <th>Article</th>
+                                <th>ArticleID</th>
+                                <th>ArticleName</th>
                                 <th>Quantity</th>
                                 <th>Price</th>
                             </tr>                   
@@ -66,12 +68,16 @@ sec_session_start();
                     $result = $conn->query($sql);
                     if ($result->num_rows > 0){
                         //output data in a table
+                        $i = 0;
                         while($row = $result->fetch_row()){
                             echo "<tr>";
-                            for($x=0; $x < count($row); $x++){
-                                echo "<td>" . $row[$x] . "</td>";
+                            echo "<td> ". $row[0] ."</td>";
+                            for($x=1; $x < count($row); $x++){
+                                echo "<td><input type='text' name='$i $x' onkeypress=\"if(event.keyCode==13) {changeStock($i,'$row[0]',$x);}\" value='". $row[$x] . "'></td>";
                                 }
+                            echo "<td>X</td>";
                             echo "</tr>";
+                            $i = $i + 1;
                         }
                     }
 
@@ -79,12 +85,46 @@ sec_session_start();
                     ?>  
                     </table>
 </div>
-	<div class="col-sm-3">
-	</div>
+
+<div class="col-sm-3">
+    <!--TODO-->
+        <form action="addArticle.php" method="post">
+            <br>
+            Name: <inpt type="text" name="articlename"><br>
+            Quantity: <input type="text" name="quantity"><br>
+            Price: <input type="text" name="price"><br>
+            <input type="submit" value="Add New Article">
+        </form>
+        <hr  \>
+        <form action="addQuantity.php" method="post">
+            Id: <input type="text" name="articleid" id="addarticleid" value="Click on a row!"><br>
+            Add Bottles : <input type="text" name="amount"><br>
+            <input type="submit" value="Add Quantity">
+        </form>
+    </div>
 </div>
+<form action="delArticle.php" method="post" style="hidden" id="delarticleform">
+    <input type="hidden" name="articleid" id="delarticleid"><br>
+</form>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $("#Stock tr td").click(function(){
+            var parent = $(this).parent()[0];
+            if($(this).is(":last-child")){
+                var id =  parent.cells[0].firstChild.value; 
+                if(confirm("Do you really want to delete the Article with id \n" + id + "?")){
+                    $("#delarticleid").val(id);
+                    $("#delarticleform").submit();
+                }
+            }
+            //window.alert(parent.cells[0].firstChild.value)
+            $("#addarticleid").val(parent.cells[0].firstChild.value);    
+        });
+    });
 
+    </script>
 		
             <div id="footer">
                <p>Robotik Fortgeschrittenenpraktikum | Mat-o-Mat | WS 2014/15 | von Jakob Schmid und Amos Treiber</p>

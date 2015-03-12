@@ -38,7 +38,7 @@ class Browser(gtk.Window):
 def getThread():        #Thread listens for RFID input and gets respective webpage
     global changed
     while True:
-        rsp = "FIRST"
+        '''rsp = "FIRST"
         fo = open("www/currentpage.html", "wb")
         fo.write(rsp);
         fo.close()
@@ -47,7 +47,7 @@ def getThread():        #Thread listens for RFID input and gets respective webpa
         lock.release()
 
         time.sleep(10)
-        print "done"
+        print "done"'''
         s = requests.Session()
         rsp = s.post("http://localhost/pythonopen.php", data={"id": "91242149124"}, verify=False)
         rsp = rsp.text

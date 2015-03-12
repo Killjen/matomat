@@ -107,7 +107,7 @@ function post(path, params, method) {
 @name username(first entry in a row)
 @x number of column
 */
-function changeTable(table, i, name, x){
+function changeUser(i, name, x){
    // window.alert("HALLO!")
     var n = i.toString() + " " + x.toString();
     
@@ -130,5 +130,31 @@ function changeTable(table, i, name, x){
     }
 
     //now post to processTableChange.php:
-    post("includes/processTableChange.php", params);
+    post("includes/processUserChange.php", params);
+}
+
+function changeStock(i, id, x){
+    //window.alert("HALLO!")
+    var n = i.toString() + " " + x.toString();
+    
+    var y=document.getElementsByName(n);
+    //get changed row:
+    //var y=y[i].cells
+    //get changed cell:
+    //var y=y[x]
+    
+    var params = new Array(); 
+    params["articleid"] = id;
+    if(x==1) { //articlename changed
+        params["newarticlename"] = y[0].value;
+
+    } else if(x==2) { //balance changed
+        params["quantity"] = y[0].value;
+
+    } else if(x==3) { //price changed
+        params["price"] = y[0].value;
+    }
+
+    //now post to processStockChange.php:
+    post("includes/processStockChange.php", params);
 }

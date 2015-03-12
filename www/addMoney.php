@@ -1,6 +1,13 @@
+<?php
+include_once 'db_connect.php';
+include_once 'functions.php';
+
+sec_session_start();
+?>
 <!Doctype html>
 <html>
 <body>
+        <?php if (login_check($mysqli) == true) : ?>
     	<?php
     	$servername = "localhost";
     	$username   = "matomat";
@@ -23,5 +30,6 @@
 	 }
 	 $conn->close();
 	 ?>
+     <?php endif; ?>
 </body>
 </html>	  

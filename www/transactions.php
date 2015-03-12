@@ -38,6 +38,7 @@ sec_session_start();
                 </ul>
                 <hr \>
                 <ul>
+                    <li><a href="register.php">Register new Admin</a></li>
                     <li><p><a href="includes/logout.php">logout</a></p></li>
               </ul>
             </div>
@@ -48,8 +49,8 @@ sec_session_start();
 	 	  <h2>Transactions</h2>
                   <table id="Header">
                             <tr>
-                                <th>Username</th>
-                                <th>ArticleID</th>
+                                <th>Username </th>
+                                <th>ArticleID </th>
                                 <th>Time</th>
                             </tr>
                     <?php

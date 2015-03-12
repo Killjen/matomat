@@ -6,17 +6,20 @@ error_reporting(E_ALL);
 #$path = "../../Documents/robotikfp/matomat/www/";
 include_once 'includes/register.inc.php';
 include_once 'includes/functions.php';
+sec_session_start();
 ?>
 <!DOCTYPE html>
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Secure Login: Registration Form</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Admin-Schnittstelle: Registration</title>
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
         <script type="text/JavaScript" src="js/sha512.js"></script> 
-        <script type="text/JavaScript" src="js/forms.js"></script>
-        <link rel="stylesheet" href="stylesheet.css" />
+        <script type="text/JavaScript" src="js/forms.js"></script> 
     </head>
     <body>
+        <?php if (login_check($mysqli) == true) : ?>
         <!-- Registration form to be output if the POST variables are not
         set or if the registration script caused an error. -->
         <h1>Register with us</h1>
@@ -60,5 +63,20 @@ include_once 'includes/functions.php';
                                    this.form.confirmpwd);" /> 
         </form>
         <p>Return to the <a href="index.php">login page</a>.</p>
+        <?php else : ?>
+            <p>
+                <span class="error">You are not authorized to access this page.</span> Please login:
+            </p>
+            <form action="includes/process_login.php" method="post" name="login_form">                      
+            Email: <input type="text" name="email" />
+            Password: <input type="password" 
+                             name="password" 
+                             id="password" 
+                             onkeypress="if(event.keyCode==13) {formhash(this.form, this.form.password);}"/>
+            <input type="button" 
+                   value="Login" 
+                   onclick="formhash(this.form, this.form.password);" /> 
+            </form>
+        <?php endif; ?>
     </body>
 </html>
