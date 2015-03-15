@@ -135,6 +135,7 @@ sec_session_start();
 
             <div id="footer">
                <p>Robotik Fortgeschrittenenpraktikum | Mat-o-Mat | WS 2014/15 | von Jakob Schmid und Amos Treiber</p>
+                <p>Login-System by <a href="www.wikihow.com">WikiHow</a>: <a href="http://www.wikihow.com/Create-a-Secure-Login-Script-in-PHP-and-MySQL">Secure Login Script</a></p>
             </div>
 
           
@@ -153,6 +154,7 @@ sec_session_start();
                    value="Login" 
                    onclick="formhash(this.form, this.form.password);" /> 
             </form>
+            
         <?php endif; ?>
     </div>
     </body>

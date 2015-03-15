@@ -40,7 +40,7 @@ if (login_check($mysqli) == true) {
             $count = mysqli_num_rows($checkQuery); 
 
             if($count>0){
-                die("Error: There already exists a user with name " . $newusername ."<br> <a href=\"log.php\">Back</a>");
+                die("Error: There already exists a user with name " . $newusername ."<br> <a href=\"../index.php\">Back</a>");
             }
 
 
@@ -61,7 +61,7 @@ if (login_check($mysqli) == true) {
             $count = mysqli_num_rows($checkQuery); 
 
             if($count>0){
-                die("Error: There already exists a user with ID " . $userid ."<br> <a href=\"log.php\">Back</a>");
+                die("Error: There already exists a user with ID " . $userid ."<br> <a href=\"../index.php\">Back</a>");
             }
             $col = "Users ID";
     		$sql = "UPDATE users SET UserID='$userid' WHERE Username='$username';";

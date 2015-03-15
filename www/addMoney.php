@@ -47,7 +47,7 @@ sec_session_start();
                 $newbalance = $balance + $amount;
                 $sql = "INSERT INTO adminaction VALUES ('" . $_SESSION['username'] . "','" .$username. "','CHANGE','" . $date . "','Users Balance','".$balance."','". $newbalance. "')";
                 $conn->query($sql);
-                header("index.php");
+                header("Location: index.php");
            	 }	
 	 else{
 		echo "Error: No entries were updated!"	; 

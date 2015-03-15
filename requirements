@@ -85,3 +85,7 @@ db user: sec_user pw: jxGnjawg
 
 GRANT SELECT, INSERT, UPDATE ON `secure_login`.* TO 'sec_user'@'localhost';
 
+
+add time interval for filter
+test for safety & functionality
+Restrict output of transactions/adminlog
