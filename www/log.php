@@ -1,6 +1,3 @@
-<!--experimental file
-    ONLY FOR CSS!
--->
 <?php
 #set_include_path('~/Documents/robotikfp/matomat/www');
 include_once 'includes/db_connect.php';
@@ -12,9 +9,9 @@ sec_session_start();
 <html>
     <head>
         <meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Admin-Schnittstelle</title>
-	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
         <script type="text/JavaScript" src="js/sha512.js"></script> 
         <script type="text/JavaScript" src="js/forms.js"></script> 
 
@@ -23,10 +20,10 @@ sec_session_start();
         <?php if (login_check($mysqli) == true) : ?>
 
         <div id="content">  
-	<div class="container-fluid">
+    <div class="container-fluid">
 <!-- ########################### navigation#####-->
-	<div class="row">
-	<div class="col-sm-3">
+    <div class="row">
+    <div class="col-sm-3">
             <div id="navigation">
                 <h1>MATOMAT</h1>
                 <hr \>
@@ -44,51 +41,40 @@ sec_session_start();
                     <li><p><a href="includes/logout.php">logout</a></p></li>
               </ul>
             </div>
-	</div>
-	
+    </div>
+    
  <!-- ####################### User Table ###### -->      
-		  <div class= "col-sm-6">
-	 	  <h2>Transactions</h2>
-                  <table id="Header">
+          <div class= "col-sm-6">
+          <h2>Log</h2>
+                  <table id="Log">
                             <tr>
-                                <th>Username </th>
-                                <th>ArticleID </th>
-                                <th>ArticleName </th>
-                                <th>Payed </th>
+                                <th>RFID</th>
                                 <th>Time</th>
-                            </tr>
-                    <?php
+                                
+                            </tr>                   
+        <?php
                     $servername = "localhost";
                     $username   = "matomat";
                     $dbpassword = "matomat94";
                     $dbname     = "matomat";
                     $conn = new mysqli($servername, $username, $dbpassword, $dbname);
-                    $transactions_username = filter_input(INPUT_POST, 'transactions_username', FILTER_SANITIZE_STRING);
-                    $transactions_time = filter_input(INPUT_POST, 'transactions_time', FILTER_SANITIZE_STRING);
-                    //catch failed connections
+                   //catch failed connections
                     if($conn->connect_error){
-                        die("Couldn't connect to db: " . $conn->connect_error);
-			}
-	            if (empty($transactions_username)){
-                       	$sql = "SELECT * from transactions";
-		    	if(!empty($transactions_time)){
-				$sql .= " WHERE Time LIKE \"$transactions_time%\"";  
-			}
-                    } else {
-                        $sql = "SELECT * from transactions WHERE Username LIKE \"$transactions_username%\"";
-		    	if(!empty($transactions_time)){
-				$sql .= " AND Time LIKE \"$transactions_time%\"";  
-			}
-                    }
-                    $sql .= " ORDER BY Time DESC";
+                        die("Couldn't connect to db: " . $conn->connect_error);}
+                
+
+
+            
+
+
+            $sql = "SELECT * FROM log ORDER BY Time DESC";
                     $result = $conn->query($sql);
                     if ($result->num_rows > 0){
                         //output data in a table
                         while($row = $result->fetch_row()){
                             echo "<tr>";
-                            for($x=0; $x < count($row); $x++){
-                                echo "<td>" . $row[$x] . "</td>";
-                                }
+                            echo "<td> ". $row[0] ."</td>";
+                            echo "<td> ". $row[1] ."</td>";
                             echo "</tr>";
                         }
                     }
@@ -97,25 +83,35 @@ sec_session_start();
                     ?>  
                     </table>
 </div>
-<div class="col-sm-3">
- <!-- ########################### search stuff#####-->
-           <div id="search">
-		<form action="transactions.php" method="post" name="search_form">                      
-                Filter Transactions:<br>
-		Username<input type="text" name="transactions_username" id="transactions_username"/><br>
-		Date<input type="text" name="transactions_time" id="transactions_time"/><br>
-                <input type="submit" 
-                       value="Search"/> 
-                </form>
 
-		<hr  \>
-            </div>
-	</div>
+<div class="col-sm-3">
+    <!--TODO-->
+        
+        <hr  \>
+        <form action="addUser.php" method="post">
+            Id: <input type="text" name="userid" id="adduserid" value="Click on a row!"><br>
+            Username: <input type="text" name="username"><br>
+            Balance: <input type="text" name="balance" value="0"><br>
+            <input type="submit" value="Add User">
+        </form>
+    </div>
 </div>
+<form action="delArticle.php" method="post" style="hidden" id="delarticleform">
+    <input type="hidden" name="articleid" id="delarticleid"><br>
+</form>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $("#Log tr td").click(function(){
+            var parent = $(this).parent()[0];
+            //window.alert(parent.cells[0].firstChild.value)
+            $("#adduserid").val(parent.cells[0].innerText);    
+        });
+    });
 
-		
+    </script>
+        
             <div id="footer">
                <p>Robotik Fortgeschrittenenpraktikum | Mat-o-Mat | WS 2014/15 | von Jakob Schmid und Amos Treiber</p>
             </div>

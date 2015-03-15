@@ -34,7 +34,9 @@ sec_session_start();
                 <ul>
                   <li><a href="index.php">Users</a></li>
                   <li><a href="stock.php">Stock</a></li>
+                  <li><a href="log.php">Unknown RFID log</a></li>
                   <li><a href="transactions.php">Transactions</a></li>
+                  <li><a href="adminlog.php">Admin log</a></li>
                 </ul>
                 <hr \>
                 <ul>

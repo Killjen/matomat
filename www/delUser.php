@@ -1,6 +1,6 @@
 <?php
-include_once 'db_connect.php';
-include_once 'functions.php';
+include_once 'includes/db_connect.php';
+include_once 'includes/functions.php';
 
 sec_session_start();
 ?>
@@ -10,17 +10,27 @@ sec_session_start();
         <?php if (login_check($mysqli) == true) : ?>
     	<?php
     	$servername = "localhost";
-    	$username   = "matomat";
+    	$dbusername   = "matomat";
     	$dbpassword = "matomat94";
     	$dbname     = "matomat";
-    	$conn = new mysqli($servername, $username, $dbpassword, $dbname);
+
+        $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING);
+
+    	$conn = new mysqli($servername, $dbusername, $dbpassword, $dbname);
     	//catch failed connections
     	if($conn->connect_error ){
-    	    die("Couldn't connect to db: " . $conn->connect_error);}
-	$sql = "DELETE FROM users where Username='". $_POST["username"]."'";
-	    	if ($conn->query($sql)==true){
-	 	header("Location: index.php");
-   	 }	
+    	    die("Couldn't connect to db: " . $conn->connect_error);
+        }
+	    $sql = "DELETE FROM users where Username='". $username ."'";
+	    if ($conn->query($sql)==true){
+            date_default_timezone_set('Europe/Berlin');
+            $date = date('Y-m-d H:i:s');
+
+            $sql = "INSERT INTO adminaction VALUES ('" . $_SESSION['username'] . "','" .$username. "','DELETE','" . $date . "','Users',null,null)";
+            $conn->query($sql);
+            //echo $sql;
+            header("Location: index.php");
+   	    }	
 	 else{
 		echo "Error: No entries were updated!"	; 
 	 }

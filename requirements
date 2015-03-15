@@ -39,25 +39,28 @@ Use Cases(Benjamin)
 	User löschen
 
 TRANSACTIONS
-	create table TRANSACTIONS ( 
-		UserID varchar(255) not null, 
-		ArticleID int, 
+	create table transactions ( 
+		Username varchar(255) not null, 
+		ArticleID int,
+		ArticleName varchar(255), (FOR CONVENIENCE)
+		Payed float,  (BECAUSE PRICES CAN CHANGE)
 		Time DATETIME, 
-		CONSTRAINT pk_Transaction PRIMARY KEY (UserID, ProductID, Time));
+		CONSTRAINT pk_Transaction PRIMARY KEY (Username, ArticleID, Time));
 	create table stock(
 		ArticleID int not null auto_increment, 
 		ArticleName varchar(255) not null, 
 		Quantity int unsigned, 
-		Price	float, 
+		Price	float unsigned, 
 		PRIMARY KEY (ArticleID));
 	create table adminaction (
 		AdminName varchar(255) not null,
+		Target varchar(255),
 		Action enum('CREATE','CHANGE','DELETE') not null,
-		Time DATETIME,
-		Table varchar(255),
+		Time DATETIME not null,
+		Col varchar(255),
 		OldValue varchar(255),
-		NewValue varchar(255)
-	)
+		NewValue varchar(255),
+		CONSTRAINT pk_Transaction PRIMARY KEY (AdminName, Action, Time));
 	create table log (
 		RFID varchar(255) not null,
 		Time DATETIME

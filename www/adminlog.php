@@ -1,10 +1,8 @@
-<!--experimental file
-    ONLY FOR CSS!
--->
 <?php
 #set_include_path('~/Documents/robotikfp/matomat/www');
 include_once 'includes/db_connect.php';
 include_once 'includes/functions.php';
+ini_set('display_errors', 1);
 error_reporting(E_ALL); 
 sec_session_start();
 ?>
@@ -12,9 +10,9 @@ sec_session_start();
 <html>
     <head>
         <meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Admin-Schnittstelle</title>
-	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
         <script type="text/JavaScript" src="js/sha512.js"></script> 
         <script type="text/JavaScript" src="js/forms.js"></script> 
 
@@ -23,10 +21,10 @@ sec_session_start();
         <?php if (login_check($mysqli) == true) : ?>
 
         <div id="content">  
-	<div class="container-fluid">
+    <div class="container-fluid">
 <!-- ########################### navigation#####-->
-	<div class="row">
-	<div class="col-sm-3">
+    <div class="row">
+    <div class="col-sm-3">
             <div id="navigation">
                 <h1>MATOMAT</h1>
                 <hr \>
@@ -44,43 +42,61 @@ sec_session_start();
                     <li><p><a href="includes/logout.php">logout</a></p></li>
               </ul>
             </div>
-	</div>
-	
+    </div>
+    
  <!-- ####################### User Table ###### -->      
-		  <div class= "col-sm-6">
-	 	  <h2>Transactions</h2>
-                  <table id="Header">
+          <div class= "col-sm-6">
+          <h2>Log</h2>
+                  <table id="Log">
                             <tr>
-                                <th>Username </th>
-                                <th>ArticleID </th>
-                                <th>ArticleName </th>
-                                <th>Payed </th>
+                                <th>AdminName</th>
+                                <th>Target</th>
+                                <th>Action</th>
                                 <th>Time</th>
-                            </tr>
-                    <?php
+                                <th>Column</th>
+                                <th>OldValue</th>
+                                <th>NewValue</th>
+                                
+                            </tr>                   
+        <?php
                     $servername = "localhost";
                     $username   = "matomat";
                     $dbpassword = "matomat94";
                     $dbname     = "matomat";
                     $conn = new mysqli($servername, $username, $dbpassword, $dbname);
-                    $transactions_username = filter_input(INPUT_POST, 'transactions_username', FILTER_SANITIZE_STRING);
-                    $transactions_time = filter_input(INPUT_POST, 'transactions_time', FILTER_SANITIZE_STRING);
-                    //catch failed connections
+                   //catch failed connections
                     if($conn->connect_error){
-                        die("Couldn't connect to db: " . $conn->connect_error);
-			}
-	            if (empty($transactions_username)){
-                       	$sql = "SELECT * from transactions";
-		    	if(!empty($transactions_time)){
-				$sql .= " WHERE Time LIKE \"$transactions_time%\"";  
-			}
-                    } else {
-                        $sql = "SELECT * from transactions WHERE Username LIKE \"$transactions_username%\"";
-		    	if(!empty($transactions_time)){
-				$sql .= " AND Time LIKE \"$transactions_time%\"";  
-			}
-                    }
-                    $sql .= " ORDER BY Time DESC";
+                        die("Couldn't connect to db: " . $conn->connect_error);}
+                
+
+            $log_adminname = filter_input(INPUT_POST, 'log_adminname', FILTER_SANITIZE_STRING);
+            $log_target = filter_input(INPUT_POST, 'log_target', FILTER_SANITIZE_STRING);
+            $log_time = filter_input(INPUT_POST, 'log_time', FILTER_SANITIZE_STRING);
+            $log_col = filter_input(INPUT_POST, 'log_col', FILTER_SANITIZE_STRING);
+            $log_action = filter_input(INPUT_POST, 'log_action', FILTER_SANITIZE_STRING);
+
+            if (empty($log_adminname)) {
+                $log_adminname = "";
+            }
+            $sql = "SELECT * FROM adminaction WHERE AdminName LIKE \"$log_adminname%\"";
+            
+            if (!empty($log_target)) {
+                //since an article target can look like "id name"
+                $sql .= " AND Target LIKE \"%$log_target%\"";
+            }
+            if (!empty($log_time)) {
+                $sql .= " AND Time LIKE \"$log_time%\"";
+            }
+            if (!empty($log_col)) {
+                //since a Column can look like "Table Column"
+                $sql .= " AND Col LIKE \"%$log_col%\"";
+            }
+            if (!empty($log_action)) {
+                //also accept lowercase:
+                $log_action = strtoupper($log_action);
+                $sql .= " AND Action = \"$log_action\"";
+            }
+            $sql .= " ORDER BY Time DESC";
                     $result = $conn->query($sql);
                     if ($result->num_rows > 0){
                         //output data in a table
@@ -100,22 +116,23 @@ sec_session_start();
 <div class="col-sm-3">
  <!-- ########################### search stuff#####-->
            <div id="search">
-		<form action="transactions.php" method="post" name="search_form">                      
-                Filter Transactions:<br>
-		Username<input type="text" name="transactions_username" id="transactions_username"/><br>
-		Date<input type="text" name="transactions_time" id="transactions_time"/><br>
+        <form action="adminlog.php" method="post" name="search_form">                      
+                Filter Actions:<br>
+        Adminname<input type="text" name="log_adminname" id="log_adminname"/><br>
+        Target<input type="text" name="log_target" id="log_target"/><br>
+        Action<input type="text" name="log_action" id="log_action"/><br>
+        Time<input type="text" name="log_time" id="log_time"/><br>
+        Column<input type="text" name="log_col" id="log_col"/><br>
+
                 <input type="submit" 
                        value="Search"/> 
                 </form>
 
-		<hr  \>
+        <hr  \>
             </div>
-	</div>
+    </div>
 </div>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 
-		
             <div id="footer">
                <p>Robotik Fortgeschrittenenpraktikum | Mat-o-Mat | WS 2014/15 | von Jakob Schmid und Amos Treiber</p>
             </div>

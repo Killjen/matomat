@@ -34,7 +34,9 @@ sec_session_start();
                 <ul>
                   <li><a href="index.php">Users</a></li>
                   <li><a href="stock.php">Stock</a></li>
+                  <li><a href="log.php">Unknown RFID log</a></li>
                   <li><a href="transactions.php">Transactions</a></li>
+                  <li><a href="adminlog.php">Admin log</a></li>
                 </ul>
                 <hr \>
                 <ul>
@@ -90,7 +92,7 @@ sec_session_start();
     <!--TODO-->
         <form action="addArticle.php" method="post">
             <br>
-            Name: <inpt type="text" name="articlename"><br>
+            Name: <input type="text" name="articlename"><br>
             Quantity: <input type="text" name="quantity"><br>
             Price: <input type="text" name="price"><br>
             <input type="submit" value="Add New Article">
@@ -99,12 +101,14 @@ sec_session_start();
         <form action="addQuantity.php" method="post">
             Id: <input type="text" name="articleid" id="addarticleid" value="Click on a row!"><br>
             Add Bottles : <input type="text" name="amount"><br>
+            <input type="hidden" name="articlename" id="addarticlename"><br>
             <input type="submit" value="Add Quantity">
         </form>
     </div>
 </div>
 <form action="delArticle.php" method="post" style="hidden" id="delarticleform">
     <input type="hidden" name="articleid" id="delarticleid"><br>
+    <input type="hidden" name="articlename" id="delarticlename"><br>
 </form>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
@@ -113,14 +117,17 @@ sec_session_start();
         $("#Stock tr td").click(function(){
             var parent = $(this).parent()[0];
             if($(this).is(":last-child")){
-                var id =  parent.cells[0].firstChild.value; 
-                if(confirm("Do you really want to delete the Article with id \n" + id + "?")){
+                var id =  parent.cells[0].innerText;
+                var name = parent.cells[1].firstChild.value;
+                if(confirm("Do you really want to delete the Article " + name + " with id \n" + id + "?")){
                     $("#delarticleid").val(id);
+                    $("#delarticlename").val(name);
                     $("#delarticleform").submit();
                 }
             }
             //window.alert(parent.cells[0].firstChild.value)
-            $("#addarticleid").val(parent.cells[0].firstChild.value);    
+            $("#addarticleid").val(parent.cells[0].innerText);
+            $("#addarticlename").val(parent.cells[1].firstChild.value); 
         });
     });
 
