@@ -14,7 +14,7 @@ sec_session_start();
         <meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Admin-Schnittstelle</title>
-	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+	<link rel="stylesheet" href="stylesheet.css">
         <script type="text/JavaScript" src="js/sha512.js"></script> 
         <script type="text/JavaScript" src="js/forms.js"></script> 
 
@@ -23,10 +23,7 @@ sec_session_start();
         <?php if (login_check($mysqli) == true) : ?>
 
         <div id="content">  
-	<div class="container-fluid">
 <!-- ########################### navigation#####-->
-	<div class="row">
-	<div class="col-sm-3">
             <div id="navigation">
                 <h1>MATOMAT</h1>
                 <hr \>
@@ -44,17 +41,15 @@ sec_session_start();
                     <li><p><a href="includes/logout.php">logout</a></p></li>
               </ul>
             </div>
-	</div>
 	
  <!-- ####################### User Table ###### -->      
-		  <div class= "col-sm-6">
 	 	  <h2>Stock</h2>
                   <table id="Stock">
                             <tr>
                                 <th>ArticleID</th>
                                 <th>ArticleName</th>
                                 <th>Quantity</th>
-                                <th>Price</th>
+                                <th>Price (€)</th>
                             </tr>                   
 		<?php
                     $servername = "localhost";
@@ -87,14 +82,11 @@ sec_session_start();
                     ?>  
                     </table>
 </div>
-
-<div class="col-sm-3">
-    <!--TODO-->
+<div id="search">
         <form action="addArticle.php" method="post">
-            <br>
             Name: <input type="text" name="articlename"><br>
-            Quantity: <input type="text" name="quantity"><br>
-            Price: <input type="text" name="price"><br>
+            Quantity: <input type="text" name="quantity" value="0"><br>
+            Price (€): <input type="text" name="price"><br>
             <input type="submit" value="Add New Article">
         </form>
         <hr  \>
@@ -104,14 +96,12 @@ sec_session_start();
             <input type="hidden" name="articlename" id="addarticlename"><br>
             <input type="submit" value="Add Quantity">
         </form>
-    </div>
 </div>
 <form action="delArticle.php" method="post" style="hidden" id="delarticleform">
     <input type="hidden" name="articleid" id="delarticleid"><br>
     <input type="hidden" name="articlename" id="delarticlename"><br>
 </form>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 <script>
     $(document).ready(function(){
         $("#Stock tr td").click(function(){
@@ -128,6 +118,12 @@ sec_session_start();
             //window.alert(parent.cells[0].firstChild.value)
             $("#addarticleid").val(parent.cells[0].innerHTML);
             $("#addarticlename").val(parent.cells[1].firstChild.value); 
+        });
+        $("#Stock tr td input").blur(function() {
+            //restore original value if input field is out of focus:
+            var parent = $(this).parent()[0];
+            $(this).val(parent.firstChild.defaultValue);
+            
         });
     });
 
@@ -155,6 +151,5 @@ sec_session_start();
                    onclick="formhash(this.form, this.form.password);" /> 
             </form>
         <?php endif; ?>
-    </div>
     </body>
 </html>

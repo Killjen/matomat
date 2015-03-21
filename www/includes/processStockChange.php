@@ -28,6 +28,10 @@ if (login_check($mysqli) == true) {
         $quantity = filter_input(INPUT_POST, 'quantity', FILTER_SANITIZE_NUMBER_INT);
         $price = filter_input(INPUT_POST, 'price', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
         
+        if (!$articleid or  !($newarticlename and $quantity and $price)) {
+            die("Error: not enough parameters provided (maybe an input field was empty?) <a href=\"../stock.php\">Back</a>");
+        }
+
         $col = "Stock "; //column that was changed
         $newValue = "null"; //new value of that column
         if ($newarticlename){

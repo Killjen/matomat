@@ -12,7 +12,7 @@ sec_session_start();
         <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Admin-Schnittstelle</title>
-    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="stylesheet.css">
         <script type="text/JavaScript" src="js/sha512.js"></script> 
         <script type="text/JavaScript" src="js/forms.js"></script> 
 
@@ -21,10 +21,6 @@ sec_session_start();
         <?php if (login_check($mysqli) == true) : ?>
 
         <div id="content">  
-    <div class="container-fluid">
-<!-- ########################### navigation#####-->
-    <div class="row">
-    <div class="col-sm-3">
             <div id="navigation">
                 <h1>MATOMAT</h1>
                 <hr \>
@@ -42,12 +38,11 @@ sec_session_start();
                     <li><p><a href="includes/logout.php">logout</a></p></li>
               </ul>
             </div>
-    </div>
+   
     
  <!-- ####################### User Table ###### -->      
-          <div class= "col-sm-6">
           <h2>Log</h2>
-                  <table id="Log">
+                  <table id="AdminLog">
                             <tr>
                                 <th>AdminName</th>
                                 <th>Target</th>
@@ -96,7 +91,7 @@ sec_session_start();
                 $log_action = strtoupper($log_action);
                 $sql .= " AND Action = \"$log_action\"";
             }
-            $sql .= " ORDER BY Time DESC";
+            $sql .= " ORDER BY Time DESC LIMIT 25"; //limit since we will get many rows in the log
                     $result = $conn->query($sql);
                     if ($result->num_rows > 0){
                         //output data in a table
@@ -113,9 +108,8 @@ sec_session_start();
                     ?>  
                     </table>
 </div>
-<div class="col-sm-3">
+<div id="search">
  <!-- ########################### search stuff#####-->
-           <div id="search">
         <form action="adminlog.php" method="post" name="search_form">                      
                 Filter Actions:<br>
         Adminname<input type="text" name="log_adminname" id="log_adminname"/><br>
@@ -129,8 +123,8 @@ sec_session_start();
                 </form>
 
         <hr  \>
-            </div>
-    </div>
+            
+
 </div>
 
             <div id="footer">

@@ -20,6 +20,10 @@ sec_session_start();
         $articlename = filter_input(INPUT_POST, 'articlename', FILTER_SANITIZE_STRING);
         $amount = filter_input(INPUT_POST, 'amount', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
 
+        if (!$articleid or  !($articlename and $amount)) {
+            die("Error: not enough parameters provided (maybe an input field was empty?) <a href=\"../stock.php\">Back</a>");
+        }
+
         $sql="SELECT Quantity FROM stock WHERE ArticleID ='" . $articleid ."'";
 
         if ($result=mysqli_query($conn,$sql))
@@ -35,11 +39,8 @@ sec_session_start();
 
         if($conn->connect_error ){
             die("Couldn't connect to db: " . $conn->connect_error);}
-        if(!is_numeric($_POST['amount']) OR $_POST['amount']>50 ){
-        die("Either your input was no number or too high (over 50)");  
-    }
+    
     $sql = "UPDATE stock SET Quantity=Quantity+" . $amount . " where ArticleID='". $articleid."'";
-#this statement is not working for wrong(empty) usernames. needs to be fixed
      if ($conn->query($sql)==true){
         date_default_timezone_set('Europe/Berlin');
         $date = date('Y-m-d H:i:s');

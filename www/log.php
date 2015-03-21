@@ -11,7 +11,7 @@ sec_session_start();
         <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Admin-Schnittstelle</title>
-    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="stylesheet.css">
         <script type="text/JavaScript" src="js/sha512.js"></script> 
         <script type="text/JavaScript" src="js/forms.js"></script> 
 
@@ -20,10 +20,6 @@ sec_session_start();
         <?php if (login_check($mysqli) == true) : ?>
 
         <div id="content">  
-    <div class="container-fluid">
-<!-- ########################### navigation#####-->
-    <div class="row">
-    <div class="col-sm-3">
             <div id="navigation">
                 <h1>MATOMAT</h1>
                 <hr \>
@@ -41,10 +37,7 @@ sec_session_start();
                     <li><p><a href="includes/logout.php">logout</a></p></li>
               </ul>
             </div>
-    </div>
     
- <!-- ####################### User Table ###### -->      
-          <div class= "col-sm-6">
           <h2>Log</h2>
                   <table id="Log">
                             <tr>
@@ -67,7 +60,7 @@ sec_session_start();
             
 
 
-            $sql = "SELECT * FROM log ORDER BY Time DESC";
+            $sql = "SELECT * FROM log ORDER BY Time DESC LIMIT 50"; //limit only for security, since new rfid cards are deleted from the unknown RFID log once activated
                     $result = $conn->query($sql);
                     if ($result->num_rows > 0){
                         //output data in a table
@@ -83,24 +76,19 @@ sec_session_start();
                     ?>  
                     </table>
 </div>
+<div id="search">
 
-<div class="col-sm-3">
-    <!--TODO-->
-        
-        <hr  \>
         <form action="addUser.php" method="post">
             Id: <input type="text" name="userid" id="adduserid" value="Click on a row!"><br>
             Username: <input type="text" name="username"><br>
             Balance: <input type="text" name="balance" value="0"><br>
             <input type="submit" value="Add User">
         </form>
-    </div>
 </div>
 <form action="delArticle.php" method="post" style="hidden" id="delarticleform">
     <input type="hidden" name="articleid" id="delarticleid"><br>
 </form>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 <script>
     $(document).ready(function(){
         $("#Log tr td").click(function(){
@@ -134,6 +122,5 @@ sec_session_start();
                    onclick="formhash(this.form, this.form.password);" /> 
             </form>
         <?php endif; ?>
-    </div>
     </body>
 </html>

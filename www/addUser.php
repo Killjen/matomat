@@ -68,31 +68,29 @@ sec_session_start();
                 <title>Admin-Schnittstelle</title>
                
                 <script type=\"text/JavaScript\" src=\"js/forms.js\"></script> 
-                <script language='javascript'>
-                function happycode(){
-                   window.alert('helo');
-                }
-                </script>
         </head>
         <body>
         <script src=\"http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js\"></script>
-        <script src=\"http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js\"></script>
         <script>
         function conf() {
-            if(confirm(\"User with name $username already eists. Do you want to change his RFID to this RFID?\n (Your Balance input will be ignored)\")){
+            if(confirm(\"User with name $username already eists. Do you want to change his RFID to this RFID? (Your Balance input will be ignored)\")){
                     var params = new Array(); 
-                    params[\"username\"] = $username;
-                    params[\"userid\"] = $userid;
+                    params[\"username\"] = \"$username\";
+                    params[\"userid\"] = \"$userid\";
+                    params[\"fromLog\"] = true;
 
                     //now post to processTableChange.php:
                     post(\"includes/processUserChange.php\", params);
+                } else {
+                    window.location = \"log.php\";
                 }
         }
-        window.onload=happycode;
+        $(document).ready(function() {
+          conf();
+        });
         </script>";
         echo $string;
-    } 
-    if ($conn->query($sql)==true){
+    } elseif ($conn->query($sql)==true){
         date_default_timezone_set('Europe/Berlin');
         $date = date('Y-m-d H:i:s');
 
@@ -105,8 +103,7 @@ sec_session_start();
 
         //echo $sql;
         header("Location: index.php");
-     }  
-     else{
+     }  else {
         echo "Error: No entries were added!"  ; 
      }
      $conn->close();

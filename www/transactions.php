@@ -14,7 +14,7 @@ sec_session_start();
         <meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Admin-Schnittstelle</title>
-	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+	<link rel="stylesheet" href="stylesheet.css">
         <script type="text/JavaScript" src="js/sha512.js"></script> 
         <script type="text/JavaScript" src="js/forms.js"></script> 
 
@@ -23,10 +23,7 @@ sec_session_start();
         <?php if (login_check($mysqli) == true) : ?>
 
         <div id="content">  
-	<div class="container-fluid">
-<!-- ########################### navigation#####-->
-	<div class="row">
-	<div class="col-sm-3">
+
             <div id="navigation">
                 <h1>MATOMAT</h1>
                 <hr \>
@@ -43,11 +40,8 @@ sec_session_start();
                     <li><a href="register.php">Register new Admin</a></li>
                     <li><p><a href="includes/logout.php">logout</a></p></li>
               </ul>
-            </div>
-	</div>
-	
+            </div>	
  <!-- ####################### User Table ###### -->      
-		  <div class= "col-sm-6">
 	 	  <h2>Transactions</h2>
                   <table id="Header">
                             <tr>
@@ -80,7 +74,7 @@ sec_session_start();
 				$sql .= " AND Time LIKE \"$transactions_time%\"";  
 			}
                     }
-                    $sql .= " ORDER BY Time DESC";
+                    $sql .= " ORDER BY Time DESC LIMIT 25";
                     $result = $conn->query($sql);
                     if ($result->num_rows > 0){
                         //output data in a table
@@ -97,7 +91,6 @@ sec_session_start();
                     ?>  
                     </table>
 </div>
-<div class="col-sm-3">
  <!-- ########################### search stuff#####-->
            <div id="search">
 		<form action="transactions.php" method="post" name="search_form">                      
@@ -109,11 +102,9 @@ sec_session_start();
                 </form>
 
 		<hr  \>
-            </div>
-	</div>
+
 </div>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 
 		
             <div id="footer">
@@ -138,6 +129,5 @@ sec_session_start();
                    onclick="formhash(this.form, this.form.password);" /> 
             </form>
         <?php endif; ?>
-    </div>
     </body>
 </html>

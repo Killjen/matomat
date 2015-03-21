@@ -19,6 +19,11 @@ sec_session_start();
         $quantity = filter_input(INPUT_POST, 'quantity', FILTER_SANITIZE_NUMBER_INT);
         $price = filter_input(INPUT_POST, 'price', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
 
+        if (!($articlename and $quantity and $price)) {
+            die("Error: not enough parameters provided (maybe an input field was empty?) <a href=\"../stock.php\">Back</a>");
+        }
+
+
         //catch failed connections
         if($conn->connect_error ){
             die("Couldn't connect to db: " . $conn->connect_error);}

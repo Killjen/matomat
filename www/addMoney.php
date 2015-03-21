@@ -20,11 +20,8 @@ sec_session_start();
 
     	//catch failed connections
     	if($conn->connect_error ){
-    	    die("Couldn't connect to db: " . $conn->connect_error);}
-    	if(!is_numeric($_POST['amount']) OR $_POST['amount']>50 ){
-		die("Either your input was no number or too high (over 50€)");	
-	}
-
+    	    die("Couldn't connect to db: " . $conn->connect_error);
+        }
     //check the old balance:
     $sql="SELECT Balance FROM users WHERE Username ='" . $username ."'";
 
@@ -40,7 +37,6 @@ sec_session_start();
     }
 
 	$sql = "UPDATE users SET Balance=Balance+" . $amount . " where Username='". $username ."'";
-#this statement is not working for wrong(empty) usernames. needs to be fixed
 	    	if ($conn->query($sql)==true){
         		date_default_timezone_set('Europe/Berlin');
                 $date = date('Y-m-d H:i:s');

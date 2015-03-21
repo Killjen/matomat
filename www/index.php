@@ -14,7 +14,9 @@ sec_session_start();
         <meta charset="UTF-8">
 	   <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Admin-Schnittstelle</title>
-	   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+	   <!--<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">-->
+       <link rel="stylesheet" href="stylesheet.css">
+
         <script type="text/JavaScript" src="js/sha512.js"></script> 
         <script type="text/JavaScript" src="js/forms.js"></script> 
 
@@ -22,11 +24,8 @@ sec_session_start();
     <body>
         <?php if (login_check($mysqli) == true) : ?>
 
-        <div id="content">  
-	<div class="container-fluid">
+<div id="display">         
 <!-- ########################### navigation#####-->
-	<div class="row">
-	<div class="col-sm-3">
             <div id="navigation">
                 <h1>MATOMAT</h1>
                 <hr \>
@@ -44,15 +43,14 @@ sec_session_start();
                     <li><p><a href="includes/logout.php">logout</a></p></li>
               </ul>
             </div>
-	</div>
 	
  <!-- ####################### User Table ###### -->      
-		    <div class= "col-sm-6">
+<div id="content">  
 		    <h2>Users</h2>
                     <table id="Users">
                             <tr>
                                 <th>Username</th>
-                                <th>Balance</th>
+                                <th>Balance (€)</th>
 			    	<th>UserID</th>
                             </tr>
                     <?php
@@ -90,7 +88,7 @@ sec_session_start();
                     ?>
                     </table>
 </div>
-	<div class="col-sm-3">
+	<div id="search">
                 <form action="index.php" method="post" name="search_form">                      
                 Search User table: <input type="text" name="users_username" id="users_username"/>
                 <input type="submit" 
@@ -103,12 +101,11 @@ sec_session_start();
 			<input type="submit" value="Charge">
 		</form>
 	</div>
-</div>
 	<form action="delUser.php" method="post" style="hidden" id="deluserform">
 	 <input type="hidden" name="username" id="delusername"><br>
 	</form>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<!--<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>-->
 	<script>
 		$(document).ready(function(){
 		$("#Users tr td").click(function(){
@@ -122,6 +119,12 @@ sec_session_start();
 			}
 			$("#addusername").val(parent.cells[0].firstChild.value);	
 		});
+        $("#Users tr td input").blur(function() {
+            //restore original value if input field is out of focus:
+            var parent = $(this).parent()[0];
+            $(this).val(parent.firstChild.defaultValue);
+            
+        });
 	});
 
 	</script>
@@ -131,7 +134,7 @@ sec_session_start();
                <p>Robotik Fortgeschrittenenpraktikum | Mat-o-Mat | WS 2014/15 | von Jakob Schmid und Amos Treiber</p>
                <p>Login-System by <a href="www.wikihow.com">WikiHow</a>: <a href="http://www.wikihow.com/Create-a-Secure-Login-Script-in-PHP-and-MySQL">Secure Login Script</a></p>
             </div>
-
+</div>
           
     
         <?php else : ?>
@@ -149,6 +152,5 @@ sec_session_start();
                    onclick="formhash(this.form, this.form.password);" /> 
             </form>
         <?php endif; ?>
-    </div>
     </body>
 </html>
