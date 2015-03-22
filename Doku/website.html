@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+       <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Mat-O-Mat</title>
+       <link rel="stylesheet" href="style.css">
+       <link href="prism.css" rel="stylesheet" />
+    </head>
+
+    <body>
+        <script src="prism.js"></script>
+        <div class="nav">
+            <ul>
+                <li><a href="#Projekt">Projekt</a></li>
+                <li><a href="#Personen">Personen</a></li>
+                <li><a href="#Praktikumsverlauf">Verlauf</a></li>
+                <li><a href="#Hardware">Hardware</a></li>
+                <li><a href="#Software">Software</a></li>
+                <li><a href="#Quellen">Quellen</a></li>
+            </ul>
+        </div>
+
+        <div id="content"><br>
+            <h1>Mat-O-Mat</h1>
+            <h3>Ein Robotik Fortgeschrittenenpraktikum</h3>
+
+            <section id="Projekt"><h2>Projekt</h2>
+            <p>Ziel des Projekts ist die Konstruktions eines Getränkeautomatensystems basierend auf RFID-Karten.
+                Nutzer sollen mit ihren Karten basierend auf ihrem eingezahlten Guthaben Getränke kaufen können.
+                Die Verwaltung soll über ein Web-Interface geschehen das auf einem Raspberry Pi liegt. Der Pi selbst
+                funktioniert als Automat mit einem Touchscreen zur Interaktion und mit einem RFID-Reader für die Karte.</p></section>
+
+            <section id="Personen"><h2>Personen</h2>
+            <p>PIC Jakob Schmid Bachelor Angewandte Informatik <br>
+                Amos Treiber Bachelor Angewandte Informatik <br>
+                Betreuer: Feli Aller und Katja Mombauer</p></section>
+
+            <section id="Praktikumsverlauf"><h2>Praktikumsverlauf</h2>
+            <p><h3>Milestones</h3>
+                <h3>Verlauf</h3>
+                <h4>1. Arduino MC und RFID Modul</h4><br>
+                <h4>2. Raspberry Pi</h4><br>
+                <h4>3. Webinterface</h4><br>
+                <h4>4. User-Interaktion</h4><br>
+                <h4>5. Mock-Up</h4></p></section>
+
+            <section id="Hardware"><h2>Hardware</h2>
+            <h3>Arduino Microcontroller</h3><br>
+            <h3>RFID-Modul</h3><br>
+            <h3>Raspberry Pi</h3><br>
+            <h3>Display</h3></section>
+
+            <section id="Software"><h2>Software</h2>
+            <h3>Aufbau</h3>
+            <h3>Admin Interface</h3>
+            <p>Auf dem Pi soll ein Webserver laufen, über dem ein Administrator die Nutzer des Matomats einfach verwalten kann. Es wird das <i>Apache HTTP Server Project</i> in Verbindung mit HTML, PHP und javascript bzw. jQuery genutzt.</p>
+            <h4>Sicherheit</h4>
+            <p>Weil sich mit dem Admin Interface die Geldbeträge der Nutzer verwalten lassen dürfen nur berechtigte Personen zugreifen. Deshalb haben wir ein Login-System integriert. Da man in Sachen Sicherheit das Rad nicht neu erfinden sollte haben wir das System des Artikels <a href="http://www.wikihow.com/Create-a-Secure-Login-Script-in-PHP-and-MySQL">"Secure Login Script"</a> von <a href="http://www.wikihow.com">Wiki-How</a> implementiert. <br>
+            Mit folgendem PHP-Code werden unsere Seiten umrahmt, um die Sicherheit zu gewährleisten:
+            <pre class="language-php"><code class="language-php">
+&lt;?php
+
+include_once 'includes/db_connect.php';
+include_once 'includes/functions.php';
+ 
+sec_session_start();
+?&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+    &lt;head&gt;
+        HTMLHEAD
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;?php if (login_check($mysqli) == true) : ?&gt;
+            LOGGED IN HTML
+        &lt;?php else : ?&gt;
+            NOT LOGGED IN HTML
+        &lt;?php endif; ?&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+        </code></pre>
+        Eine Registrierung weiterer Admins ist nur durch einen Admin möglich. Zum Login wird eine e-Mail sowie Password benötigt.</p>
+        <h4>Admin Use-Cases</h4>
+        <h5>1. Nutzer Hinzufügen</h5>
+        <p>Der Admin soll einen Nutzer mit einem Anfangsbetrag zu den Nutzern hinzufügen. Die RFID muss dafür im Log vorhanden sein und der Username des Nutzers eindeutig sein.</p>
+        <h5>2. Nutzer Bearbeiten</h5>
+        <p>Der Admin soll die Attribute (inkl. Namen und RFID) eines Nutzers ändern können.</p>
+        <h5>3. Nutzer Löschen</h5>
+        <p>Der Admin soll einen Nutzer löschen können.</p>
+        <h5>4. Getränk Hinzufügen</h5>
+        <p>Der Admin soll ein Getränk mit Namen, Preis, Bild und Anzahl zum Stock hinzufügen können.</p>
+        <h5>5. Getränk Bearbeiten</h5>
+        <p>Der Admin soll die Attribute (inkl. Namen und Preis) eines Getränks im Stock ändern können.</p>
+        <h5>6. Getränk Löschen</h5>
+        <p>Der Admin soll ein Getränk aus dem Stock entfernen können.</p>
+        <h5>7. Transaktionen ansehen</h5>
+        <p>Der Admin soll sehen können, welcher Nutzer wann welches Getränk gekauft hat.</p>
+        <h5>8. Admin Log ansehen</h5>
+        <p>Der Admin soll sehen können, welcher Admin wann welchen Use Case ausgeführt hat.</p>
+        <h5>9. Weiteren Admin hinzufügen</h5>
+        <p>Der Admin soll weitere Admins zum Login-System hinzufügen können, sodass auch diese das System verwalten können.</p>
+
+        <h4>Pages</h4>
+        <p>Bei den folgenden Seiten des Admin-Interfaces kann folgendes getan werden:</p>
+        <h5>Users</h5>
+        <i>Use-Cases 2 und 3</i>
+        <p>Es werden alle Nutzer der Datenbank mit ihren Guthaben und RFIDs angezeigt. Mit einem klick in eine Zelle der Tabelle und anschliessender Bestätigung durch die Enter-Taste wird ein Attribut geändert. Klickt man auf das X einer Spalte wird der Nutzer nach einer Bestätigung gelöscht. Auf der rechten Seite gibt es eine Suchfunktion, um nach Nutzern mit bestimmten Namen zu suchen (dabei wird der Anfang verglichen) und eine Eingabe, um einem ausgewähltem Nutzer einen bestimmten Geldbetrag hinzuzufügen.</p>
+        <h5>Stock</h5>
+        <i>Use-Cases 4,5 und 6</i>
+        <p>Es werden alle Getränke der Datenbank mit ihren Preisen Bildern und Namen angezeigt. Mit einem klick in eine Zelle der Tabelle und anschliessender Bestätigung durch die Enter-Taste wird ein Attribut geändert. Klickt man auf das X einer Spalte wird der Eintrag nach einer Bestätigung gelöscht. Auf der rechten Seite gibt es eine Eingabe, um einem ausgewähltem Getränk nach einer Auffüllung der Bestände eine bestimmte Anzahl an Flaschen hinzuzufügen. Ausserdem befindet sich dort eine Eingabeform, mit der ein neues Getränk hinzugefügt werden kann.</p>
+        <h5>Unknown RFID-Log</h5>
+        <i>Use-Case 1</i>
+        <p>Es werden alle RFIDs der Zeit nach geordnet gezeigt, die dem System unbekannt sind und zu dem angezeigtem Zeitpunkt am Automaten waren. Darauf basierend kann der Admin mit der Eingabe auf der rechten Seite einen neuen User mit einem bestimmten Namen und Startbetrag hinzufügen. Ist dies geschehen so wird der Eintrag aus dem Log gelöscht.</p>
+        <h5>Transactions</h5>
+        <i>Use-Case 7</i>
+        <p>Es werden alle geschehenen Transaktionen der Zeit nach geordnet angezeigt. Da dies ziemlich viele Einträge sind werden nur die ersten 25 Ergebnisse angezeigt. Rechts befindet sich eine Eingabe, mit der nach Einträgen von Nutzern und/oder Zeiten gesucht werden kann. Gesucht wird nach anfänglicher Übereinstimmung, so wird z.B. mit "2015-02-27" der ganze Tag und mit "2015-02-27 12" der Zeitraum 12:00:00-12:59:59 angezeigt.</p>
+        <h5>Admin Log</h5>
+        <i>Use-Case 8</i>
+        <p>Es werden alle geschehenen Admin-Aktionen der Zeit nach geordnet angezeigt. Da dies ziemlich viele Einträge sind werden nur die ersten 25 Ergebnisse angezeigt. Rechts befindet sich eine Eingabe, mit der nach Einträgen von Admins, Ziele, Aktionen, Einträgen und/oder Zeiten gesucht werden kann. Gesucht wird beim Admin und bei Zeiten nach anfänglicher Übereinstimmung, bei Zielen und Einträgen nach Ergebnissen, die den Such-String enthalten und bei den Aktionen exakt (aber <i>case insensitive</i>) nach den möglichen Aktionen "CREATE", "CHANGE" und "DELETE".</p>
+        <h5>Register new Admin</h5>
+        <i>Use-Case 9</i>
+    </section>
+        </div>
+
+        <div id="footer">
+            <p>Robotik Fortgeschrittenenpraktikum | Mat-o-Mat | WS 2014/15 | von Jakob Schmid und Amos Treiber</p>
+        </div>
+    </body>
+</html>

@@ -41,7 +41,7 @@ sec_session_start();
    
     
  <!-- ####################### User Table ###### -->      
-          <h2>Log</h2>
+          <h2>Admin Log</h2>
                   <table id="AdminLog">
                             <tr>
                                 <th>AdminName</th>

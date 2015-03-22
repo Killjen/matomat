@@ -38,7 +38,7 @@ sec_session_start();
               </ul>
             </div>
     
-          <h2>Log</h2>
+          <h2>Unknown RFID Log</h2>
                   <table id="Log">
                             <tr>
                                 <th>RFID</th>

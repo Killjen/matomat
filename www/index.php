@@ -1,6 +1,3 @@
-<!--experimental file
-    ONLY FOR CSS!
--->
 <?php
 #set_include_path('~/Documents/robotikfp/matomat/www');
 include_once 'includes/db_connect.php';
