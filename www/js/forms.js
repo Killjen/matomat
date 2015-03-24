@@ -153,6 +153,8 @@ function changeStock(i, id, x){
 
     } else if(x==3) { //price changed
         params["price"] = y[0].value;
+    } else if(x==4) { //logopath changed
+        params["logopath"] = y[0].value;
     }
 
     //now post to processStockChange.php:

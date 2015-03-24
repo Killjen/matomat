@@ -183,6 +183,10 @@ table tr:hover td{
     max-width: 15px;
     overflow: hidden;
 }
+#Stock td {
+    max-width: 30px;
+    overflow: hidden;
+}
 /*div#header{position: relative;background-color:#eaebec;margin: 0 auto;}
 div#header h1{height:80px;line-height:80px;margin:0;padding-left:10px;}
 div#header{min-width: 700px; width: 100%}

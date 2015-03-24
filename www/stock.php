@@ -50,6 +50,7 @@ sec_session_start();
                                 <th>ArticleName</th>
                                 <th>Quantity</th>
                                 <th>Price (€)</th>
+                                <th>LogoPath</th>
                             </tr>                   
 		<?php
                     $servername = "localhost";
@@ -87,6 +88,7 @@ sec_session_start();
             Name: <input type="text" name="articlename"><br>
             Quantity: <input type="text" name="quantity" value="0"><br>
             Price (€): <input type="text" name="price"><br>
+            LogoPath: <input type="text" name="logopath"><br>
             <input type="submit" value="Add New Article">
         </form>
         <hr  \>

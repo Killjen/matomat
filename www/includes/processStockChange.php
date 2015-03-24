@@ -27,9 +27,10 @@ if (login_check($mysqli) == true) {
         $newarticlename = filter_input(INPUT_POST, 'newarticlename', FILTER_SANITIZE_STRING);
         $quantity = filter_input(INPUT_POST, 'quantity', FILTER_SANITIZE_NUMBER_INT);
         $price = filter_input(INPUT_POST, 'price', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+        $logopath = filter_input(INPUT_POST, 'logopath', FILTER_SANITIZE_STRING);
         
-        if (!$articleid or  !($newarticlename and $quantity and $price)) {
-            die("Error: not enough parameters provided (maybe an input field was empty?) <a href=\"../stock.php\">Back</a>");
+        if (!$articleid and  ($newarticlename or $quantity or $price)) {
+            die("Error: not enough parameters provided (maybe the name, quantity or price input field was empty?) <a href=\"../stock.php\">Back</a>");
         }
 
         $col = "Stock "; //column that was changed
@@ -51,7 +52,14 @@ if (login_check($mysqli) == true) {
             $sql = "UPDATE stock SET Price='$price' WHERE ArticleID='$articleid';";
             $oldSql = "SELECT Price FROM stock WHERE ArticleID='$articleid';";
             $newValue = $price;
+        }
+        if($logopath){
+            $col = "Stock LogoPath";
+            $sql = "UPDATE stock SET LogoPath='$logopath' WHERE ArticleID='$articleid';";
+            $oldSql = "SELECT LogoPath FROM stock WHERE ArticleID='$articleid';";
+            $newValue = $logopath;
         } 
+
 
         if ($result=mysqli_query($conn,$oldSql))
           {

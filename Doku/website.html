@@ -53,7 +53,54 @@
 
             <section id="Software"><h2>Software</h2>
             <h3>Aufbau</h3>
-            <h3>Admin Interface</h3>
+            <img src="Struktur.jpg"></img> <br>
+            Im Zentrum steht die Datenbank. Diese Verwaltet den Login für die Admin-Schnittstelle und die Daten für den Mat-o-mat an sich. Die Datenbank für den Login ist aus unten genanntem Tutorial entnommen. Die Mat-o-mat Datenbank ist wie folgt aufgebaut:
+            <pre class="language-sql"><code class="language-sql">
+CREATE TABLE transactions ( 
+    Username VARCHAR(255) NOT NULL, 
+    ArticleID INT,
+    ArticleName VARCHAR(255),
+    Payed FLOAT UNSIGNED,
+    Time DATETIME, 
+    CONSTRAINT pk_Transaction PRIMARY KEY (Username, ArticleID, Time));
+CREATE TABLE stock(
+    ArticleID INT NOT NULL AUTO_INCREMENT, 
+    ArticleName VARCHAR(255) NOT NULL, 
+    Quantity INT UNSIGNED, 
+    Price FLOAT UNSIGNED,
+    LogoPath VARCHAR(255),
+    PRIMARY KEY (ArticleID));
+CREATE TABLE adminaction (
+    AdminName VARCHAR(255) NOT NULL,
+    Target VARCHAR(255),
+    Action enum('CREATE','CHANGE','DELETE') NOT NULL,
+    Time DATETIME NOT NULL,
+    Col VARCHAR(255),
+    OldValue VARCHAR(255),
+    NewValue VARCHAR(255) NOT NULL,
+    CONSTRAINT pk_Adminaction PRIMARY KEY (AdminName, Action, Time));
+CREATE TABLE log (
+    RFID VARCHAR(255) NOT NULL,
+    Time DATETIME,
+    PRIMARY KEY(RFID));
+CREATE TABLE users(
+    Username VARCHAR(255) NOT NULL,
+    Balance FLOAT UNSIGNED,
+    UserID VARCHAR(255),
+    PRIMARY KEY(Username));
+            </code></pre>
+            <p>Im folgenden wird auf die Bedeutung der einzelnen Tabellen der DB eingegangen:</p>
+            <h5>transactions</h5>
+            <p>Diese Tabelle ist ein Log aller getätigten Transaktionen. Ein Eintrag sagt also aus, welcher Nutzer zu welchem Zeitpunkt welches Getränk (inkl. Name und Preis, da diese variabel sind) gekauft hat. Solche Einträge werden automatisch beim Kauf durch unsere C++-Software generiert.</p>
+            <h5>stock</h5>
+            <p>Hier ist der aktuelle Stand der Befüllung des Mat-o-mats gespeichert. Jeder Eintrag ist eine (eindeutige) Artikel-Id mit einem Namen, der aktuellen Anzahl an Flaschen, dem aktuell verlangtem Preis und eines Pfades zu der Bilddatei, die am Automaten angezeigt werden soll. Die Tabelle muss bei Befüllung manuell über die Admin-Schnittstelle geändert werden.</p>
+            <h5>adminaction</h5>
+            <p>Diese Tabelle ist ein Log aller getätigten Aktionen über das Admin-Interface. Ein Eintrag besteht aus dem Username des Admins, dem Ziel der Aktion (z.B. ein Nutzer), der Art der Aktion, der Zeit, der geänderten Spalte des Ziels ("Col", z.B. "Users Balance") und des alten und neuen Wertes, falls vorhanden. Der Sinn ist, dass man bei eventuellen Fehlern des Admins eine Rekonstruktion durchführen kann.</p>
+            <h5>log</h5>
+            <p>Hier ist ein Eintrag vorhanden, wenn eine unbekannte bzw. neue RFID-Karte an den Automaten gehalten wurde. Ein Eintrag besteht aus der RFID und dem Zeitpunkt. Wird über das Admin-Interface eine dieser RFIDs einem (eventuell neuem) Nutzer zugewiesen so wird der Eintrag gelöscht. Es werden also nur noch nicht verwendete RFIDs angezeigt.</p>
+            <h5>users</h5>
+            <p>Hier werden die Nutzer unseres Automatensystems gespeichert. Damit sich nicht jeder Nutzer seine RFID merken muss und da man so eine RFID-karte auch mal verlieren kann wird er durch einen selbst bestimmten Usernamen eindeutig identifiziert. In jedem Eintrag steht der aktuelle Euro-Betrag und die RFID der Karte des Nutzers.</p>
+            <h3>Admin-Interface</h3>
             <p>Auf dem Pi soll ein Webserver laufen, über dem ein Administrator die Nutzer des Matomats einfach verwalten kann. Es wird das <i>Apache HTTP Server Project</i> in Verbindung mit HTML, PHP und javascript bzw. jQuery genutzt.</p>
             <h4>Sicherheit</h4>
             <p>Weil sich mit dem Admin Interface die Geldbeträge der Nutzer verwalten lassen dürfen nur berechtigte Personen zugreifen. Deshalb haben wir ein Login-System integriert. Da man in Sachen Sicherheit das Rad nicht neu erfinden sollte haben wir das System des Artikels <a href="http://www.wikihow.com/Create-a-Secure-Login-Script-in-PHP-and-MySQL">"Secure Login Script"</a> von <a href="http://www.wikihow.com">Wiki-How</a> implementiert. <br>
@@ -120,6 +167,15 @@ sec_session_start();
         <p>Es werden alle geschehenen Admin-Aktionen der Zeit nach geordnet angezeigt. Da dies ziemlich viele Einträge sind werden nur die ersten 25 Ergebnisse angezeigt. Rechts befindet sich eine Eingabe, mit der nach Einträgen von Admins, Ziele, Aktionen, Einträgen und/oder Zeiten gesucht werden kann. Gesucht wird beim Admin und bei Zeiten nach anfänglicher Übereinstimmung, bei Zielen und Einträgen nach Ergebnissen, die den Such-String enthalten und bei den Aktionen exakt (aber <i>case insensitive</i>) nach den möglichen Aktionen "CREATE", "CHANGE" und "DELETE".</p>
         <h5>Register new Admin</h5>
         <i>Use-Case 9</i>
+
+        <h4>Nutzer Use-Cases</h4>
+        <h5>1. Kontostand einsehen</h5>
+        <p>Der Nutzer soll nachdem er seine Karte an den RFID-Leser gehalten hat seinen Kontostand ansehen können. Nach einer kurzen Zeit ohne RFID-Karte am Gerät soll das Willkommenmenü erscheinen, um einen Missbrauch durch nachfolgende Nutzer zu verhindern (das gilt für jeden Use-Case)</p>
+        <h5>2. Getränk kaufen</h5>
+        <p>Der Nutzer soll nachdem er seine Karte an den RFID-Leser gehalten hat Optionen in Form von Buttons mit Bildern haben, um ein gewünschtes Getränk zu kaufen. Dieses wird vom Automaten ausgegeben und die Transaktion ist vollständig.</p>
+
+        ABLAUF-DIAGRAMM o.ä.
+        
     </section>
         </div>
 
