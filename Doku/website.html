@@ -27,19 +27,26 @@
 
             <section id="Projekt"><h2>Projekt</h2>
             <p>Ziel des Projekts ist die Konstruktions eines Getränkeautomatensystems basierend auf RFID-Karten.
-                Nutzer sollen mit ihren Karten basierend auf ihrem eingezahlten Guthaben Getränke kaufen können.
-                Die Verwaltung soll über ein Web-Interface geschehen das auf einem Raspberry Pi liegt. Der Pi selbst
-                funktioniert als Automat mit einem Touchscreen zur Interaktion und mit einem RFID-Reader für die Karte.</p></section>
+                Nutzer sollen durch ihre Karte identifiziert werden und mit ihrem eingezahlten Guthaben Getränke kaufen können.
+                Die Verwaltung soll über ein Web-Interface geschehen das auf einem Raspberry Pi liegt. Dieser Raspberry Pi 
+                funktioniert zusätzlich als Automat mit einem Touchscreen zur Interaktion und mit einem RFID-Reader für die Karten.</p></section>
 
             <section id="Personen"><h2>Personen</h2>
-            <p>PIC Jakob Schmid Bachelor Angewandte Informatik <br>
-                Amos Treiber Bachelor Angewandte Informatik <br>
-                Betreuer: Feli Aller und Katja Mombauer</p></section>
+<div><img src="team.jpg" style="width:304px;height:228px; float:right;">
+            <p>PIC Jakob Schmid, Bachelor Angewandte Informatik <br>
+                Amos Treiber, Bachelor Angewandte Informatik <br> 
+                Betreuer: Felix Aller und Katja Mombauer</p></div></section>
+
+
+<br><br><br>
+
 
             <section id="Praktikumsverlauf"><h2>Praktikumsverlauf</h2>
             <p><h3>Milestones</h3>
                 <h3>Verlauf</h3>
-                <h4>1. Arduino MC und RFID Modul</h4><br>
+                <h4>1. Arduino MC und RFID Modul</h4><br> 
+                <p>Zu Beginn galt es die Verbindung zwischen dem RFID-Modul (Modell RFID-RC522) und dem Raspberry Pi über einen Mikrocontroller herzustellen. Da sich die Lieferung des Raspberry Pi verzörgerte, wurde die Verbindung zunächst mit einem Laptop getestet. 
+                Hierzu wurde zuerst das RFID-Modul mit Hilfe von etwas Lötarbeit mit dem Arduino verbunden, die Übertragung zwischen Arduino und Laptop fand dann über serielle Schnittstelle(USB) statt. Bezogen auf das ganze Projekt wurde der Aufwand für diesen Milestone relativ exakt eingeschätzt. Der Softwareteil nahm sehr wenig Zeit in Anspruch, da der Beispielcode von funduino.de (sieht Quellen) nur leicht modifiziert werden musste. Der Hardwareteil gestaltete sich etwas aufwendiger, da erst provisorisch zu Testzwecken gelötet wurde 
                 <h4>2. Raspberry Pi</h4><br>
                 <h4>3. Webinterface</h4><br>
                 <h4>4. User-Interaktion</h4><br>
