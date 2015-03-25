@@ -66,8 +66,8 @@ sec_session_start();
                         //output data in a table
                         while($row = $result->fetch_row()){
                             echo "<tr>";
-                            echo "<td> ". $row[0] ."</td>";
-                            echo "<td> ". $row[1] ."</td>";
+                            echo "<td>". $row[0] ."</td>";
+                            echo "<td>". $row[1] ."</td>";
                             echo "</tr>";
                         }
                     }

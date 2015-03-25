@@ -69,7 +69,7 @@ sec_session_start();
                         $i = 0;
                         while($row = $result->fetch_row()){
                             echo "<tr>";
-                            echo "<td> ". $row[0] ."</td>";
+                            echo "<td>". $row[0] ."</td>";
                             for($x=1; $x < count($row); $x++){
                                 echo "<td><input type='text' name='$i $x' onkeypress=\"if(event.keyCode==13) {changeStock($i,'$row[0]',$x);}\" value='". $row[$x] . "'></td>";
                                 }

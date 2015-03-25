@@ -94,7 +94,7 @@ sec_session_start();
         date_default_timezone_set('Europe/Berlin');
         $date = date('Y-m-d H:i:s');
 
-        $sql = "INSERT INTO adminaction VALUES ('" . $_SESSION['username'] . "','" .$username. "','CREATE','" . $date . "','Users',null,'". $balance. "')";
+        $sql = "INSERT INTO adminaction VALUES ('" . $_SESSION['username'] . "','" .$username. "','CREATE','" . $date . "','Users',null,'". $balance. " ".$userid."')";
         $conn->query($sql);
 
         //since user was created with RFID: delete it from RFID log

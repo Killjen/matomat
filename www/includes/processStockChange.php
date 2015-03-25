@@ -29,12 +29,11 @@ if (login_check($mysqli) == true) {
         $logopath = filter_input(INPUT_POST, 'logopath', FILTER_SANITIZE_STRING);
         
         //since in php 0==empty, we replace temporarily with a dummy value ('zero')
-        if($quantity===0){
+        if($quantity==="0"){
             $quantity="zero";        
-            die("fu php");
         }
         if (!($articleid and  ($newarticlename or $quantity or $price or isset($_POST['logopath'])))) {
-            die("Error: not enough parameters provided (maybe the name, quantity or price input field was empty?) <a href=\"../stock.php\">Back</a>");
+            die("Error: not enough parameters provided (maybe the name, quantity or price input field was empty or price was set to 0?) <a href=\"../stock.php\">Back</a>");
         }
 
         $col = "Stock "; //column that was changed

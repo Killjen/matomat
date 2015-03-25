@@ -14,15 +14,18 @@ sec_session_start();
         $dbpassword = "matomat94";
         $dbname     = "matomat";
         $conn = new mysqli($servername, $dbusername, $dbpassword, $dbname);
-    echo $_POST['quantity'];
         $articlename = filter_input(INPUT_POST, 'articlename', FILTER_SANITIZE_STRING);
         $quantity = filter_input(INPUT_POST, 'quantity', FILTER_SANITIZE_NUMBER_INT);
         $price = filter_input(INPUT_POST, 'price', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
         $logopath = filter_input(INPUT_POST, 'logopath', FILTER_SANITIZE_STRING);
 
+        //dummy value since in php 0==empty
+        if ($quantity === "0") {
+            $quantity = "zero";
+        }
+
         if (!($articlename and $quantity and $price)) {
-            echo "$quantity";
-            die("Error: not enough parameters provided (maybe the name, quantity or price field was empty?) <a href=\"../stock.php\">Back</a>");
+            die("Error: not enough parameters provided (maybe the name, quantity or price field was empty or the price was 0?) <a href=\"../stock.php\">Back</a>");
         }
 
 
@@ -32,6 +35,9 @@ sec_session_start();
         //TODO if(!is_numeric($_POST['amount']) OR $_POST['amount']>50 ){
         //die("Either your input was no number or too high (over 50€)");  
     
+    if ($quantity == "zero") {
+      $quantity = 0;
+    }
     //automatic id assigned
     $sql = "INSERT INTO stock VALUES (0,'" . $articlename . "'," . $quantity . "," .$price. ",'".$logopath."')";
     if ($conn->query($sql)==true){
@@ -51,7 +57,7 @@ sec_session_start();
           mysqli_free_result($result);
         }
 
-        $sql = "INSERT INTO adminaction VALUES ('" . $_SESSION['username'] . "','$assignedID " .$articlename. "','CREATE','" . $date . "','Stock',null,'". $quantity. " " .$price. " ".$logopath."'')";
+        $sql = "INSERT INTO adminaction VALUES ('" . $_SESSION['username'] . "','$assignedID " .$articlename. "','CREATE','" . $date . "','Stock',null,'". $quantity. " " .$price. " ".$logopath."')";
         $conn->query($sql);
         //echo $sql;
         header("Location: stock.php");

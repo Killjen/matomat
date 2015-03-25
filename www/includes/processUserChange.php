@@ -33,6 +33,10 @@ if (login_check($mysqli) == true) {
         $newValue = "null";
         $oldValue = "null";
 
+        //since in php 0==empty, we replace temporarily with a dummy value ('zero')
+        if($balance==="0"){
+            $balance="zero";        
+        }
 
         //at least one additional character has to be set and not null:
         if (!($username and  ($newusername or $balance or $userid or $fromLog))) {
@@ -56,6 +60,9 @@ if (login_check($mysqli) == true) {
             $newValue = $newusername;
         } 
         if ($balance){
+            if ($balance=="zero") {
+                $balance=0;
+            }
             $col = "Users Balance";
             $sql = "UPDATE users SET Balance=$balance WHERE Username='$username';";
             $oldSql = "SELECT Balance FROM users WHERE Username='$username';";
