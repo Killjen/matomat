@@ -94,7 +94,7 @@ sec_session_start();
         $("#Log tr td").click(function(){
             var parent = $(this).parent()[0];
             //window.alert(parent.cells[0].firstChild.value)
-            $("#adduserid").val(parent.cells[0].innerText);    
+            $("#adduserid").val(parent.cells[0].innerHTML);    
         });
     });
 

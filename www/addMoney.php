@@ -46,7 +46,8 @@ sec_session_start();
                 header("Location: index.php");
            	 }	
 	 else{
-		echo "Error: No entries were updated!"	; 
+		echo "Error: No entries were updated!<br>"	; 
+        echo "<a href='index.php'>Back</a>";
 	 }
 	 $conn->close();
 	 ?>

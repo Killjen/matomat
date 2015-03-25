@@ -21,7 +21,6 @@ if (login_check($mysqli) == true) {
 
         $conn = new mysqli($servername, $name, $dbpassword, $dbname);
 
-        
       
         $articleid = filter_input(INPUT_POST, 'articleid', FILTER_SANITIZE_NUMBER_INT);
         $newarticlename = filter_input(INPUT_POST, 'newarticlename', FILTER_SANITIZE_STRING);
@@ -29,7 +28,12 @@ if (login_check($mysqli) == true) {
         $price = filter_input(INPUT_POST, 'price', FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
         $logopath = filter_input(INPUT_POST, 'logopath', FILTER_SANITIZE_STRING);
         
-        if (!$articleid and  ($newarticlename or $quantity or $price)) {
+        //since in php 0==empty, we replace temporarily with a dummy value ('zero')
+        if($quantity===0){
+            $quantity="zero";        
+            die("fu php");
+        }
+        if (!($articleid and  ($newarticlename or $quantity or $price or isset($_POST['logopath'])))) {
             die("Error: not enough parameters provided (maybe the name, quantity or price input field was empty?) <a href=\"../stock.php\">Back</a>");
         }
 
@@ -42,6 +46,10 @@ if (login_check($mysqli) == true) {
             $newValue = $newarticlename;
         } 
         if ($quantity){
+            //replace dummy value
+            if($quantity=="zero"){
+                $quantity=0;        
+            }
             $col = "Stock Quantity";
             $sql = "UPDATE stock SET Quantity=$quantity WHERE ArticleID='$articleid';";
             $oldSql = "SELECT Quantity FROM stock WHERE ArticleID='$articleid';";
@@ -53,7 +61,7 @@ if (login_check($mysqli) == true) {
             $oldSql = "SELECT Price FROM stock WHERE ArticleID='$articleid';";
             $newValue = $price;
         }
-        if($logopath){
+        if(isset($_POST['logopath'])){
             $col = "Stock LogoPath";
             $sql = "UPDATE stock SET LogoPath='$logopath' WHERE ArticleID='$articleid';";
             $oldSql = "SELECT LogoPath FROM stock WHERE ArticleID='$articleid';";

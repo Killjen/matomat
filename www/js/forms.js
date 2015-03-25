@@ -93,7 +93,6 @@ function post(path, params, method) {
             hiddenField.setAttribute("type", "hidden");
             hiddenField.setAttribute("name", key);
             hiddenField.setAttribute("value", params[key]);
-
             form.appendChild(hiddenField);
          }
     }
@@ -134,7 +133,6 @@ function changeUser(i, name, x){
 }
 
 function changeStock(i, id, x){
-    //window.alert("HALLO!")
     var n = i.toString() + " " + x.toString();
     
     var y=document.getElementsByName(n);
@@ -151,6 +149,7 @@ function changeStock(i, id, x){
     } else if(x==2) { //balance changed
         params["quantity"] = y[0].value;
 
+//        window.alert("HALLO!"+ y[0].value)
     } else if(x==3) { //price changed
         params["price"] = y[0].value;
     } else if(x==4) { //logopath changed
