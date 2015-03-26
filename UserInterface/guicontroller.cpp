@@ -46,29 +46,26 @@ void GUIController::displayIntroductionMenu(){
     this->p_entry->username     =   "";
     this->p_entry->balance      =   0;
     this->p_entry->userID       =   "";
+    p_introMenu->showFullScreen();
     p_buyMenu->hide();
     p_compMenu->hide();
-    p_introMenu->showFullScreen();
     return;
 }
 
 //note that all of this is locked (through handleReadyRead)
 void GUIController::displayBuyMenu(){
-    p_introMenu->hide();
-    p_compMenu->hide();
     //to-do: need to make sure that race-conditions are excluded: especially for the timer
     p_buyMenu->setUpBuyMenu(p_entry);
 
     //set up and start timer
     p_buyTimer->setObjectName(p_entry->userID);
     p_buyTimer->start();
-
     p_buyMenu->showFullScreen();
+    p_introMenu->hide();
+    p_compMenu->hide();
 }
 
 void GUIController::displayCompletionMenu(int buttonID){
-    p_introMenu->hide();
-    p_buyMenu->hide();
     p_compMenu->setUpCompletionMenu(p_lock, p_entry, buttonID);
 
     //set up and start timer
@@ -78,6 +75,8 @@ void GUIController::displayCompletionMenu(int buttonID){
     p_lock->unlock();
 
     p_compMenu->showFullScreen();
+    p_introMenu->hide();
+    p_buyMenu->hide();
 
 }
 
@@ -169,14 +168,16 @@ void GUIController::getDbEntry(QString newID){
 
         //maybe need to convert parameter to QString here(or change the :
         QString strTime = rawTime.toString("yyyy-MM-dd hh:mm:ss");
-        qDebug() << "Time to be inserted : " <<strTime;
+        qDebug() << "insert unknown ID into log";
         query2.exec("INSERT INTO log (RFID, Time) "
                      "VALUES ('"+ newID + "', '"+ strTime +"' );");
-        qDebug() << "INSERT INTO log (RFID, Time) "
-                    "VALUES ('"+ newID + "', '"+ strTime +"' );";
         //may fail bc feature not available
         if (query2.numRowsAffected() == 0){
             qDebug() << "failed to update the unknown id log";
+        }else{
+            QMessageBox msgBox;
+            msgBox.setText("Die ID Ihrer Karte ist (noch) unbekannt.\n Wenden Sie sich bitte an den Administrator um ihre Karte zu registrieren.");
+            msgBox.exec();
         }
         //reset currentID and display IntroductionMenu since ID is unknown
         p_entry->username = "";
