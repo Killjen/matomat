@@ -6,74 +6,74 @@ Stock refillen.
 
 
 Database
-	users(Username)
-		Username STRING
-		Balance INT
-		UserID STRING
+   users(Username)
+      Username STRING
+      Balance INT
+      UserID STRING
 
-	stock(ArticleID)
-		ArticleID
-		Quantity
-		Price
-	
-	TRANSACTIONS(UserID, ProductID, Time)
-		UserID
-		ProductID	
-		Time
+   stock(ArticleID)
+      ArticleID
+      Quantity
+      Price
+   
+   TRANSACTIONS(UserID, ProductID, Time)
+      UserID
+      ProductID   
+      Time
 
-	ADMIN
-		Username
-		PasswordHash
+   ADMIN
+      Username
+      PasswordHash
 
 Use Cases(Benjamin)
-	Transaktionen ansehen
+   Transaktionen ansehen
 
-	Guthaben ändern (wahlfrei)
+   Guthaben ändern (wahlfrei)
 
-	Guthaben aufladen
+   Guthaben aufladen
 
-	User-Uebersicht mit Filterfunktion
+   User-Uebersicht mit Filterfunktion
 
-	Neuen User Hinzufügen
+   Neuen User Hinzufügen
 
-	User löschen
+   User löschen
 
 TRANSACTIONS
-	create table transactions ( 
-		Username varchar(255) not null, 
-		ArticleID int,
-		ArticleName varchar(255), (FOR CONVENIENCE)
-		Payed float,  (BECAUSE PRICES CAN CHANGE)
-		Time DATETIME, 
-		CONSTRAINT pk_Transaction PRIMARY KEY (Username, ArticleID, Time));
-	create table stock(
-		ArticleID int not null auto_increment, 
-		ArticleName varchar(255) not null, 
-		Quantity int unsigned, 
-		Price	float unsigned, 
+   create table transactions ( 
+      Username varchar(255) not null, 
+      ArticleID int,
+      ArticleName varchar(255), (FOR CONVENIENCE)
+      Payed float,  (BECAUSE PRICES CAN CHANGE)
+      Time DATETIME, 
+      CONSTRAINT pk_Transaction PRIMARY KEY (Username, ArticleID, Time));
+   create table stock(
+      ArticleID int not null auto_increment, 
+      ArticleName varchar(255) not null, 
+      Quantity int unsigned, 
+      Price   float unsigned, 
         LogoPath    varchar(255),
-		PRIMARY KEY (ArticleID));
-	create table adminaction (
-		AdminName varchar(255) not null,
-		Target varchar(255),
-		Action enum('CREATE','CHANGE','DELETE') not null,
-		Time DATETIME not null,
-		Col varchar(255),
-		OldValue varchar(255),
-		NewValue varchar(255),
-		CONSTRAINT pk_Transaction PRIMARY KEY (AdminName, Action, Time));
-	create table log (
-		RFID varchar(255) not null,
-		Time DATETIME
-	)
+      PRIMARY KEY (ArticleID));
+   create table adminaction (
+      AdminName varchar(255) not null,
+      Target varchar(255),
+      Action enum('CREATE','CHANGE','DELETE') not null,
+      Time DATETIME not null,
+      Col varchar(255),
+      OldValue varchar(255),
+      NewValue varchar(255),
+      CONSTRAINT pk_Transaction PRIMARY KEY (AdminName, Action, Time));
+   create table log (
+      RFID varchar(255) not null,
+      Time DATETIME
+   )
 
 
 users
-	create table users(
-		Username varchar(255) not null,
-		Balance float,
-		UserID varchar(255),
-		PRIMARY KEY(Username));
+   create table users(
+      Username varchar(255) not null,
+      Balance float,
+      UserID varchar(255),
+      PRIMARY KEY(Username));
 
 
 LOGIN (database: secure_login)
