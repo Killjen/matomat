@@ -6,7 +6,6 @@ BuyMenu::BuyMenu(QWidget *parent) :
     ui(new Ui::BuyMenu)
 {
     ui->setupUi(this);
-
 }
 
 BuyMenu::~BuyMenu()
@@ -15,10 +14,10 @@ BuyMenu::~BuyMenu()
 }
 
 void BuyMenu::setUpBuyMenu(dbEntry* p_entry){
-    //clean up old labelList to-do:FIND A WAY TO REMOVE STUFF FROM THE GRIDLAYOUT
+    //clean up old labelList
     for (int i = 0; i < _buttonList.size(); ++i) {
-        this->ui->gridLayout->removeWidget(_buttonList[i]);
-        this->ui->gridLayout->removeWidget(_labelList[i]);
+        this->ui->buttonLayout->removeWidget(_buttonList[i]);
+        this->ui->buttonLayout->removeWidget(_labelList[i]);
         delete _buttonList[i];
         delete _labelList[i];
     }
@@ -26,8 +25,9 @@ void BuyMenu::setUpBuyMenu(dbEntry* p_entry){
     _labelList.clear();
 
     //set up account info on top right
-    this->ui->username->setText(p_entry->username);
-    this->ui->balance->setText(QString::number((p_entry->balance)));
+    QFont font("Arial", 36);
+    this->ui->profile->setFont(font);
+    this->ui->profile->setText(p_entry->username + ", " + QString::number((p_entry->balance)) + QString::fromUtf8("€"));
 
 
     //set up all purchasable articles as buttons (by accessing the stock table in our db)
@@ -41,14 +41,15 @@ void BuyMenu::setUpBuyMenu(dbEntry* p_entry){
     while(query.next()){
         qDebug() << "adding button to buymenu";
         _buttonList.append(new QPushButton(query.value(0).toString()));
-        _labelList.append(new QLabel(query.value(1).toString() + " €" ));
+        _labelList.append(new QLabel(query.value(1).toString() + QString::fromUtf8(" €") ));
         _buttonList[i]->setObjectName(query.value(2).toString());
+        _buttonList[i]->setFont(font);
+        _labelList[i]->setFont(font);
+        _labelList[i]->setAlignment(Qt::AlignCenter);
+        _buttonList[i]->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+        _labelList[i]->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+
         if(query.value(3).toString() != ""){
-            /*QPixmap pixmap("/var/www/"+query.value(3).toString());
-            qDebug() << pixmap;
-            QIcon ButtonIcon(pixmap);
-            _buttonList[i]->setIcon(ButtonIcon);
-            _buttonList[i]->setIconSize(pixmap.rect().size());*/
             //to-do: check what happens, if there is a wrong filename
             _buttonList[i]->setIcon(QIcon("/var/www/" + query.value(3).toString()));
        }
@@ -61,14 +62,20 @@ void BuyMenu::setUpBuyMenu(dbEntry* p_entry){
     fillLayout();
 }
 
+
 void BuyMenu::fillLayout(){
     for (int i = 0; i < _buttonList.size(); ++i) {
-        this->ui->gridLayout->addWidget(_buttonList[i],i,0);
-        this->ui->gridLayout->addWidget(_labelList[i],i,1);
+        ui->buttonLayout->addWidget(_buttonList[i],i, 0);
+        ui->buttonLayout->addWidget(_labelList[i], i, 3);
         connect(_buttonList[i], SIGNAL(clicked()), this, SLOT(emitDisplayCompletionMenu()));
     }
 }
 
 void BuyMenu::emitDisplayCompletionMenu(){
     emit changeToCompletionMenu(sender()->objectName().toInt());
+}
+
+void BuyMenu::on_backButton_clicked()
+{
+    emit changeToIntroductionMenu();
 }

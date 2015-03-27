@@ -17,14 +17,15 @@ GUIController::GUIController(QSerialPort* serialPort, QObject *parent) :
     connect(p_buyTimer,         SIGNAL(timeout()),                          this,   SLOT(handleBuyTimeout()));
     connect(p_compTimer,        SIGNAL(timeout()),                          this,   SLOT(handleCompTimeout()));
     connect(_serialPort,        SIGNAL(error(QSerialPort::SerialPortError)),this,   SLOT(handleError(QSerialPort::SerialPortError)));
-    connect(this->p_buyMenu,    SIGNAL(changeToCompletionMenu(int)),        this,   SLOT(displayCompletionMenu(int)));
+    connect(p_buyMenu,          SIGNAL(changeToCompletionMenu(int)),        this,   SLOT(displayCompletionMenu(int)));
+    connect(p_buyMenu,          SIGNAL(changeToIntroductionMenu()),         p_buyTimer,   SIGNAL(timeout()));
     p_entry->balance    = 0;
     p_entry->userID     = "";
     p_entry->username   = "";
 
     //set up timer for completion menu and buy menu
     p_buyTimer->setSingleShot(true);
-    p_buyTimer->setInterval(10000);
+    p_buyTimer->setInterval(15000);
     p_compTimer->setSingleShot(true);
     p_compTimer->setInterval(5000);
 
@@ -46,29 +47,26 @@ void GUIController::displayIntroductionMenu(){
     this->p_entry->username     =   "";
     this->p_entry->balance      =   0;
     this->p_entry->userID       =   "";
+    p_introMenu->showFullScreen();
     p_buyMenu->hide();
     p_compMenu->hide();
-    p_introMenu->show();
-    return;
+
 }
 
 //note that all of this is locked (through handleReadyRead)
 void GUIController::displayBuyMenu(){
-    p_introMenu->hide();
-    p_compMenu->hide();
     //to-do: need to make sure that race-conditions are excluded: especially for the timer
     p_buyMenu->setUpBuyMenu(p_entry);
 
     //set up and start timer
     p_buyTimer->setObjectName(p_entry->userID);
     p_buyTimer->start();
-
-    p_buyMenu->show();
+    p_buyMenu->showFullScreen();
+    p_introMenu->hide();
+    p_compMenu->hide();
 }
 
 void GUIController::displayCompletionMenu(int buttonID){
-    p_introMenu->hide();
-    p_buyMenu->hide();
     p_compMenu->setUpCompletionMenu(p_lock, p_entry, buttonID);
 
     //set up and start timer
@@ -77,7 +75,9 @@ void GUIController::displayCompletionMenu(int buttonID){
         p_compTimer->start();
     p_lock->unlock();
 
-    p_compMenu->show();
+    p_compMenu->showFullScreen();
+    p_introMenu->hide();
+    p_buyMenu->hide();
 
 }
 
@@ -95,6 +95,7 @@ void GUIController::handleReadyRead(){
     QString newID = rx.cap(1);
     qDebug() <<"newID: "<< newID;
     _result.clear();
+    //qDebug() <<"successful clearing? "<<_serialPort->clear();
 
     //dont change anything, if ID doesn't change
     if (p_entry->userID == newID){
@@ -119,7 +120,6 @@ void GUIController::handleReadyRead(){
         displayBuyMenu();
     }
     p_lock->unlock();
-
 }
 
 
@@ -163,21 +163,27 @@ void GUIController::getDbEntry(QString newID){
     if(query1.size() <= 0){
         query1.finish();
         QSqlQuery query2;
-        qDebug() << "This ID is unknown, adding entry to unknown ID log";
+        qDebug() << "This ID is unknown";
 
         QDateTime rawTime = QDateTime::currentDateTime();
 
         //maybe need to convert parameter to QString here(or change the :
         QString strTime = rawTime.toString("yyyy-MM-dd hh:mm:ss");
-        qDebug() << "Time to be inserted : " <<strTime;
+        qDebug() << "insert unknown ID into log";
         query2.exec("INSERT INTO log (RFID, Time) "
                      "VALUES ('"+ newID + "', '"+ strTime +"' );");
-        qDebug() << "INSERT INTO log (RFID, Time) "
-                    "VALUES ('"+ newID + "', '"+ strTime +"' );";
-        //may fail bc feature not available
-        if (query2.numRowsAffected() == 0){
-            qDebug() << "failed to update the unknown id log";
+        QMessageBox msgBox;
+        //update time for unknown card
+        if (query2.numRowsAffected() <= 0){
+            qDebug() << "updating time when unknown ID was last registered";
+            QSqlQuery query3;
+            query3.exec("UPDATE log SET Time='" + strTime + "' WHERE RFID='" + newID + "';");
+            msgBox.setText("Die ID ihre Karte ist noch unbekannt (Uhrzeit aktuallisiert). Wenden Sie sich bitte an den Administrator um ihre Karte zu registrieren.");
+        }else{
+            msgBox.setText("Die ID Ihrer Karte ist (noch) unbekannt.\n Wenden Sie sich bitte an den Administrator um ihre Karte zu registrieren.");
         }
+
+        msgBox.exec();
         //reset currentID and display IntroductionMenu since ID is unknown
         p_entry->username = "";
         displayIntroductionMenu();

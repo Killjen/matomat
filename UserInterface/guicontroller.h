@@ -2,6 +2,7 @@
 #define GUICONTROLLER_H
 
 #include <QObject>
+#include <QMessageBox>
 #include <QSerialPort>
 #include "introductionmenu.h"
 #include "buymenu.h"

@@ -17,7 +17,6 @@ int main(int argc, char *argv[])
         qDebug() << "Failed to open port, error: " + serialPort->errorString();
         return 1;
     }
-    qDebug() << QImageReader::supportedImageFormats() ;
     //connect to DB here, since all the other classes also need to have access to the DB
     createDBConnection();
 

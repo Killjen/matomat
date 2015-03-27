@@ -81,10 +81,9 @@ GRANT SELECT, INSERT, UPDATE ON `secure_login`.* TO 'sec_user'@'localhost';
 
 TODO-LIST:
 IMPORTANT:
-Backbutton from buyMenu
 Success-Message for adding unknown ID to logg (with time)
 servos
-schönes display
+reduce stock after purchase
 OPTIONAL:
 add time interval for filter
 fix RFID/UserIDs to length 8
