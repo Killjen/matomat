@@ -17,14 +17,15 @@ GUIController::GUIController(QSerialPort* serialPort, QObject *parent) :
     connect(p_buyTimer,         SIGNAL(timeout()),                          this,   SLOT(handleBuyTimeout()));
     connect(p_compTimer,        SIGNAL(timeout()),                          this,   SLOT(handleCompTimeout()));
     connect(_serialPort,        SIGNAL(error(QSerialPort::SerialPortError)),this,   SLOT(handleError(QSerialPort::SerialPortError)));
-    connect(this->p_buyMenu,    SIGNAL(changeToCompletionMenu(int)),        this,   SLOT(displayCompletionMenu(int)));
+    connect(p_buyMenu,          SIGNAL(changeToCompletionMenu(int)),        this,   SLOT(displayCompletionMenu(int)));
+    connect(p_buyMenu,          SIGNAL(changeToIntroductionMenu()),         p_buyTimer,   SIGNAL(timeout()));
     p_entry->balance    = 0;
     p_entry->userID     = "";
     p_entry->username   = "";
 
     //set up timer for completion menu and buy menu
     p_buyTimer->setSingleShot(true);
-    p_buyTimer->setInterval(10000);
+    p_buyTimer->setInterval(15000);
     p_compTimer->setSingleShot(true);
     p_compTimer->setInterval(5000);
 
@@ -49,7 +50,7 @@ void GUIController::displayIntroductionMenu(){
     p_introMenu->showFullScreen();
     p_buyMenu->hide();
     p_compMenu->hide();
-    return;
+
 }
 
 //note that all of this is locked (through handleReadyRead)
@@ -94,6 +95,7 @@ void GUIController::handleReadyRead(){
     QString newID = rx.cap(1);
     qDebug() <<"newID: "<< newID;
     _result.clear();
+    //qDebug() <<"successful clearing? "<<_serialPort->clear();
 
     //dont change anything, if ID doesn't change
     if (p_entry->userID == newID){
@@ -118,7 +120,6 @@ void GUIController::handleReadyRead(){
         displayBuyMenu();
     }
     p_lock->unlock();
-
 }
 
 
@@ -162,7 +163,7 @@ void GUIController::getDbEntry(QString newID){
     if(query1.size() <= 0){
         query1.finish();
         QSqlQuery query2;
-        qDebug() << "This ID is unknown, adding entry to unknown ID log";
+        qDebug() << "This ID is unknown";
 
         QDateTime rawTime = QDateTime::currentDateTime();
 
@@ -171,14 +172,18 @@ void GUIController::getDbEntry(QString newID){
         qDebug() << "insert unknown ID into log";
         query2.exec("INSERT INTO log (RFID, Time) "
                      "VALUES ('"+ newID + "', '"+ strTime +"' );");
-        //may fail bc feature not available
-        if (query2.numRowsAffected() == 0){
-            qDebug() << "failed to update the unknown id log";
+        QMessageBox msgBox;
+        //update time for unknown card
+        if (query2.numRowsAffected() <= 0){
+            qDebug() << "updating time when unknown ID was last registered";
+            QSqlQuery query3;
+            query3.exec("UPDATE log SET Time='" + strTime + "' WHERE RFID='" + newID + "';");
+            msgBox.setText("Die ID ihre Karte ist noch unbekannt (Uhrzeit aktuallisiert). Wenden Sie sich bitte an den Administrator um ihre Karte zu registrieren.");
         }else{
-            QMessageBox msgBox;
             msgBox.setText("Die ID Ihrer Karte ist (noch) unbekannt.\n Wenden Sie sich bitte an den Administrator um ihre Karte zu registrieren.");
-            msgBox.exec();
         }
+
+        msgBox.exec();
         //reset currentID and display IntroductionMenu since ID is unknown
         p_entry->username = "";
         displayIntroductionMenu();
