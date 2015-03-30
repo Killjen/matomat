@@ -36,7 +36,8 @@ void CompletionMenu::setUpCompletionMenu(QMutex* p_lock, dbEntry *p_entry, int b
     if (query2.numRowsAffected() <= 0){
         qDebug() << "failed to update balance";
     }
-    //update transactions table to-do: insert datetime correctly
+
+    //update transactions table
     QSqlQuery query3;
     QString strTime = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
     QString str =  "INSERT INTO transactions (Username, ArticleID, ArticleName, Payed, Time) "
@@ -46,6 +47,13 @@ void CompletionMenu::setUpCompletionMenu(QMutex* p_lock, dbEntry *p_entry, int b
     //may fail bc feature not available
     if (query3.numRowsAffected()==0){
         qDebug() << "failed to update transaction log";
+    }
+
+    //update stock table
+    QSqlQuery query4;
+    query4.exec("UPDATE stock SET Quantity = Quantity - 1 WHERE ArticleID='" + QString::number(buttonID) + "'");
+    if (query4.numRowsAffected() <= 0){
+        qDebug() << "failed to update stock";
     }
 
     p_lock->unlock();
