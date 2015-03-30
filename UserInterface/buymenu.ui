@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>944</width>
-    <height>381</height>
+    <width>1226</width>
+    <height>685</height>
    </rect>
   </property>
   <property name="sizePolicy">
-   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
@@ -19,7 +19,7 @@
   <property name="windowTitle">
    <string>Mat-O-Mat</string>
   </property>
-  <layout class="QVBoxLayout" name="buyMenuLayout" stretch="0,10">
+  <layout class="QVBoxLayout" name="buyMenuLayout" stretch="0,0">
    <property name="spacing">
     <number>0</number>
    </property>

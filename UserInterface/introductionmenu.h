@@ -15,6 +15,7 @@ class IntroductionMenu : public QMainWindow
 public:
     explicit IntroductionMenu(QWidget *parent = 0);
     ~IntroductionMenu();
+    void showUnknownMessage();
 
 private:
     Ui::IntroductionMenu *ui;

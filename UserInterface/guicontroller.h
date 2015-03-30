@@ -7,6 +7,7 @@
 #include "introductionmenu.h"
 #include "buymenu.h"
 #include "completionmenu.h"
+#include "unknownidform.h"
 
 class GUIController : public QObject
 {
@@ -50,7 +51,7 @@ private:
     IntroductionMenu*   p_introMenu;
     BuyMenu*            p_buyMenu;
     CompletionMenu*     p_compMenu;
-
+    UnknownIDForm*      p_unknownForm;
     //members for serial port
     QByteArray      _result;
     QSerialPort*    _serialPort;

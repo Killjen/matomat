@@ -23,6 +23,7 @@ void BuyMenu::setUpBuyMenu(dbEntry* p_entry){
     }
     _buttonList.clear();
     _labelList.clear();
+    _resizableList.clear();
 
     //set up account info on top right
     QFont font("Arial", 36);
@@ -42,6 +43,9 @@ void BuyMenu::setUpBuyMenu(dbEntry* p_entry){
         qDebug() << "adding button to buymenu";
         _buttonList.append(new QPushButton(query.value(0).toString()));
         _labelList.append(new QLabel(query.value(1).toString() + QString::fromUtf8(" €") ));
+        _resizableList.append(true);
+
+        //set some properties for a pretty GUI
         _buttonList[i]->setObjectName(query.value(2).toString());
         _buttonList[i]->setFont(font);
         _labelList[i]->setFont(font);
@@ -50,9 +54,9 @@ void BuyMenu::setUpBuyMenu(dbEntry* p_entry){
         _labelList[i]->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
 
         if(query.value(3).toString() != ""){
-            //to-do: check what happens, if there is a wrong filename
             _buttonList[i]->setIcon(QIcon("/var/www/" + query.value(3).toString()));
-            _buttonList[i]->setIconSize(QSize(200,200));
+            //to resize icons correctly
+            _buttonList[i]->installEventFilter(this);
        }
         //grey out buttons if balance is too low or article is out of stock
         if((query.value(1).toFloat() > p_entry->balance) or (query.value(4).toFloat()<=0)){
@@ -63,11 +67,25 @@ void BuyMenu::setUpBuyMenu(dbEntry* p_entry){
     fillLayout();
 }
 
+bool BuyMenu::eventFilter(QObject *object, QEvent *event)
+{
+
+    for (int i = 0; i < _buttonList.size(); ++i) {
+        if (_buttonList[i] == object && event->type() == QEvent::Resize && _resizableList[i]) {
+            //_buttonList[i]->setIconSize(_buttonList[i]->size());
+            _resizableList[i]=false;
+            qDebug() << _buttonList[i]->size();
+            qDebug() << i <<"button was resized!"<< _buttonList[i]->size();
+        }
+    }
+
+}
 
 void BuyMenu::fillLayout(){
     for (int i = 0; i < _buttonList.size(); ++i) {
         ui->buttonLayout->addWidget(_buttonList[i],i, 0);
         ui->buttonLayout->addWidget(_labelList[i], i, 3);
+
         connect(_buttonList[i], SIGNAL(clicked()), this, SLOT(emitDisplayCompletionMenu()));
     }
 }

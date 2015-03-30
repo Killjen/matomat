@@ -6,7 +6,6 @@ CompletionMenu::CompletionMenu(QWidget *parent) :
     ui(new Ui::CompletionMenu)
 {
     ui->setupUi(this);
-    showFullScreen();
 }
 
 CompletionMenu::~CompletionMenu()

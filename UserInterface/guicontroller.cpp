@@ -6,6 +6,7 @@ GUIController::GUIController(QSerialPort* serialPort, QObject *parent) :
     p_introMenu(new IntroductionMenu()),
     p_buyMenu(new BuyMenu()),
     p_compMenu(new CompletionMenu()),
+    p_unknownForm(new UnknownIDForm()),
     p_entry(new dbEntry()),
     _serialPort(serialPort),
     p_buyTimer(new QTimer()),
@@ -19,6 +20,7 @@ GUIController::GUIController(QSerialPort* serialPort, QObject *parent) :
     connect(_serialPort,        SIGNAL(error(QSerialPort::SerialPortError)),this,   SLOT(handleError(QSerialPort::SerialPortError)));
     connect(p_buyMenu,          SIGNAL(changeToCompletionMenu(int)),        this,   SLOT(displayCompletionMenu(int)));
     connect(p_buyMenu,          SIGNAL(changeToIntroductionMenu()),         p_buyTimer,   SIGNAL(timeout()));
+    connect(p_unknownForm,      SIGNAL(changeToIntroductionMenu()),         this,   SLOT(displayIntroductionMenu()));
     p_entry->balance    = 0;
     p_entry->userID     = "";
     p_entry->username   = "";
@@ -47,9 +49,11 @@ void GUIController::displayIntroductionMenu(){
     this->p_entry->username     =   "";
     this->p_entry->balance      =   0;
     this->p_entry->userID       =   "";
+
     p_introMenu->showFullScreen();
     p_buyMenu->hide();
     p_compMenu->hide();
+    p_unknownForm->hide();
 
 }
 
@@ -64,11 +68,12 @@ void GUIController::displayBuyMenu(){
     p_buyMenu->showFullScreen();
     p_introMenu->hide();
     p_compMenu->hide();
+    p_unknownForm->hide();
 }
 
 void GUIController::displayCompletionMenu(int buttonID){
     p_compMenu->setUpCompletionMenu(p_lock, p_entry, buttonID);
-
+    qDebug() << "Done conducting purchase";
     //set up and start timer
     p_lock->lock();
         p_compTimer->setObjectName(p_entry->userID);
@@ -78,12 +83,14 @@ void GUIController::displayCompletionMenu(int buttonID){
     p_compMenu->showFullScreen();
     p_introMenu->hide();
     p_buyMenu->hide();
+    p_unknownForm->hide();
 
 }
 
 
 void GUIController::handleReadyRead(){
     qDebug() << "Data is ready to be read\n";
+
     _result.append( _serialPort->readAll());
     qDebug() << _result;
 
@@ -95,7 +102,6 @@ void GUIController::handleReadyRead(){
     QString newID = rx.cap(1);
     qDebug() <<"newID: "<< newID;
     _result.clear();
-    //qDebug() <<"successful clearing? "<<_serialPort->clear();
 
     //dont change anything, if ID doesn't change
     if (p_entry->userID == newID){
@@ -107,8 +113,6 @@ void GUIController::handleReadyRead(){
     p_lock->lock();
         p_buyTimer->stop();
         p_compTimer->stop();
-        //our current ID has changed to another known ID to-do: race condition (user1 buys, user2 changes ID and has to pay)
-        p_entry->userID = newID;
 
 
     //get the corresponding DB entry if necessary (-> if the new ID is different from the current one)
@@ -117,9 +121,15 @@ void GUIController::handleReadyRead(){
     if(p_entry->username == ""){
         qDebug() << "unknown ID, no entry was returned";
     }else {
+        //our current ID has changed to another known ID
+        p_entry->userID = newID;
+
         displayBuyMenu();
     }
     p_lock->unlock();
+    if(_serialPort->bytesAvailable() > 0){
+        _serialPort->readAll();
+    }
 }
 
 
@@ -172,21 +182,28 @@ void GUIController::getDbEntry(QString newID){
         qDebug() << "insert unknown ID into log";
         query2.exec("INSERT INTO log (RFID, Time) "
                      "VALUES ('"+ newID + "', '"+ strTime +"' );");
-        QMessageBox msgBox;
+
         //update time for unknown card
         if (query2.numRowsAffected() <= 0){
             qDebug() << "updating time when unknown ID was last registered";
             QSqlQuery query3;
             query3.exec("UPDATE log SET Time='" + strTime + "' WHERE RFID='" + newID + "';");
-            msgBox.setText("Die ID ihre Karte ist noch unbekannt (Uhrzeit aktuallisiert). Wenden Sie sich bitte an den Administrator um ihre Karte zu registrieren.");
+            qDebug()<<"Die ID ihre Karte ist noch unbekannt (Uhrzeit aktuallisiert)";
         }else{
-            msgBox.setText("Die ID Ihrer Karte ist (noch) unbekannt.\n Wenden Sie sich bitte an den Administrator um ihre Karte zu registrieren.");
+            qDebug() << "Die ID Ihrer Karte ist unbekannt";
         }
+        //display unknownIDFOrm
+        p_unknownForm->showFullScreen();
+        p_introMenu->hide();
+        p_buyMenu->hide();
+        p_compMenu->hide();
 
-        msgBox.exec();
-        //reset currentID and display IntroductionMenu since ID is unknown
-        p_entry->username = "";
-        displayIntroductionMenu();
+        //handleReadyRead needs to know, our user is unknown
+        p_entry->username="";
+        p_entry->userID=newID;
+        //display IntroductionMenu since ID is unknown
+        //displayIntroductionMenu(true);
+
 
     } else {
         query1.next();

@@ -6,7 +6,6 @@ IntroductionMenu::IntroductionMenu(QWidget *parent) :
     ui(new Ui::IntroductionMenu)
 {
     ui->setupUi(this);
-    showFullScreen();
 }
 
 IntroductionMenu::~IntroductionMenu()
@@ -14,3 +13,6 @@ IntroductionMenu::~IntroductionMenu()
     delete ui;
 }
 
+void IntroductionMenu::showUnknownMessage(){
+    ui->statusBar->showMessage("Unbekannte ID");
+}
