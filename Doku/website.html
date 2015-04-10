@@ -52,9 +52,9 @@
                 <h4>3. Webinterface</h4><br>
                 <h4>4. User-Interaktion</h4><br>
 <p>Der erste Ansatz war, da wir bisher bereits mit Websprachen gearbeitet hatten, auch die User-Schnittstelle am Automaten unter anderem mit Websprachen zu erstellen(z.B. mit Python für die serielle Schnittstelle und PHP/JS für die Darstellung). Diese Idee schien auch dadurch attraktiv, dass die User-Schnittstelle auf den ersten Blick wenig komplex wirkte und so eine Lösung, die eher "quick and dirty" war, naheliegend war. Bei genauerer Betrachtung stellte sich dies jedoch als wenig praktisch heraus, da eine sinnvolle Kommunikationsschnittstelle zwischen der Oberfläche (PHP/JS) und der dahinterliegenden Businesslogik (Python) fehlte.
-Zur Lösung dieser Probleme 
+Um diese Probleme zu lösen, entschieden wir uns dafür, C++ mit Qt zu verwenden. Zusätzlich zur Möglichkeit einfach grafische Oberflächen zu erstellen bot Qt den Signal/Slot-Mechanismus an, der eine einfache Kommunikation zwischen Businesslogik und Oberfläche ermöglicht. Der zusätzliche Aufwand durch Einarbeitung in Qt und Portierung auf den Pi wurde durch die eben genannten Vorteile klar aufgewogen.
 </p>
-                <h4>5. Mock-Up</h4></p></section>
+                <h4>5. Mock-Up</h4>Das Mock-Up besteht </p></section>
 
             <section id="Hardware"><h2>Hardware</h2>
             <h3>Arduino Microcontroller</h3><br>
@@ -178,6 +178,21 @@ sec_session_start();
         <p>Es werden alle geschehenen Admin-Aktionen der Zeit nach geordnet angezeigt. Da dies ziemlich viele Einträge sind werden nur die ersten 25 Ergebnisse angezeigt. Rechts befindet sich eine Eingabe, mit der nach Einträgen von Admins, Ziele, Aktionen, Einträgen und/oder Zeiten gesucht werden kann. Gesucht wird beim Admin und bei Zeiten nach anfänglicher Übereinstimmung, bei Zielen und Einträgen nach Ergebnissen, die den Such-String enthalten und bei den Aktionen exakt (aber <i>case insensitive</i>) nach den möglichen Aktionen "CREATE", "CHANGE" und "DELETE".</p>
         <h5>Register new Admin</h5>
         <i>Use-Case 9</i>
+<h3>User-Interface</h3>
+<p>Auf dem Pi wird eine Qt/C++-Anwendung ausgeführt, die verschiedene Menüs auf dem Display anzeigt, welche auf Nutzereingaben via Touch-Display oder RFID-Reader reagiert. Bei den entsprechenden Eingaben greift die Anwenung außerdem auf die Datenbank zu und steuert den Servo (siehe Aufbau).</p>
+<h4>Menüs</h4>
+<p>Die Menüs sind jeweils als Subklasse von QWidget implementiert. Auf dem Display werden folgende Menüs dargestellt:</p>
+<h5>IntroductionMenu</h5>
+<p>Hier wird ein kurzer Willkommenstext angezeigt. Das IntroductionMenu ist das Menü, welches standartmäßig angezeigt wird, sollte keine bekannte Karte am RFID-Reader anliegen.</p>
+<h5>BuyMenu</h5>
+<p>Das BuyMenu öffnet sich, nachdem ein neuer aber bekannter Nutzer seine Karte an das RFID-Lesegerät hält. Es werden der Name des Nutzers, sein aktuelles Guthaben und alle in der Datenbank vorhandenen Artikel mit ihrem Preis angezeigt. Ist ein Artikel nicht mehr verfügbar (Anzahl der Flaschen ist 0) oder besitzt der Nutzer nicht genug Guthaben, um diesen Artikel zu kaufen, so wird der entsprechende QPushButton ausgegraut. <br>
+Weiterhin enthält das BuyMenu einen <i>Abbrechen</i>-Button und einen Timeout, über den es möglich ist sich auszuloggen und ins IntroductionMenu zurückzukehren.</p> 
+<h5>CompletionMenu</h5>
+<p>Ins CompletionMenu gelangt der Nutzer, wenn er im BuyMenu einen Artikel zum Kauf ausgewählt hat. Das CompletionMenu führt den eigentlichen Kaufvorgang durch, zieht also den Preis des Artikels vom Guthaben des Nutzers ab und steuert den Servo an, der symbolisch für eine Getränkeausgabe steht. Es wird dann eine kurze Erfolgsmeldung angezeigt. <br>
+Das IntroductionMenu wird durch einen Timeout oder das halten einer anderen RFID-Karte an das Lesegerät verlassen.</p>
+<h5>UnknownIDMenu</h5>
+<p>Wie der Name schon verrät öffnet sich dieses Menü sobald eine der Datenbank unbekannte Karte registriert wird. Es wird eine kurze Nachricht angezeig, die auf diese Tatsache hinweist und nahelegt sich mit dem Admin in Verbindung zu setzen. <br>
+Das UnknownIDMenu kann durch einen <i>OK</i>-Button oder das halten einer anderen RFID-Karte an das Lesegerät verlassen werden. <img src="statemachine.png"></img><i>In dieser Darstellung werden die kürzeren deutschen Begriffe verwendet. IntroductionMenu=Willkommen, BuyMenu=Kaufen, CompletionMenu=Erfolg, UnknownIDMenu=Unbekannte ID loggen</i></p>
 
         <h4>Nutzer Use-Cases</h4>
         <h5>1. Kontostand einsehen</h5>
@@ -185,9 +200,11 @@ sec_session_start();
         <h5>2. Getränk kaufen</h5>
         <p>Der Nutzer soll nachdem er seine Karte an den RFID-Leser gehalten hat Optionen in Form von Buttons mit Bildern haben, um ein gewünschtes Getränk zu kaufen. Dieses wird vom Automaten ausgegeben und die Transaktion ist vollständig.</p>
 
-        ABLAUF-DIAGRAMM o.ä.
+        
         
     </section>
+          <section id="Quellen"><h2>Quellen</h2>
+            <p>In diesem Projekt wurden zustätzlich folgende Quellen verwendet:</p></section>
         </div>
 
         <div id="footer">
