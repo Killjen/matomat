@@ -23,19 +23,27 @@
 
         <div id="content"><br>
             <h1>Mat-O-Mat</h1>
-            <h3>Ein Robotik Fortgeschrittenenpraktikum</h3>
+            <h3>Ein Robotik Fortgeschrittenenpraktikum - WS 2014/15</h3>
 
             <section id="Projekt"><h2>Projekt</h2>
+                <h3>Zielsetzung</h3>
             <p>Ziel des Projekts ist die Konstruktions eines Getränkeautomatensystems basierend auf RFID-Karten.
                 Nutzer sollen durch ihre Karte identifiziert werden und mit ihrem eingezahlten Guthaben Getränke kaufen können.
                 Die Verwaltung soll über ein Web-Interface geschehen das auf einem Raspberry Pi liegt. Dieser Raspberry Pi 
-                funktioniert zusätzlich als Automat mit einem Touchscreen zur Interaktion und mit einem RFID-Reader für die Karten.</p></section>
+                funktioniert zusätzlich als Automat mit einem Touchscreen zur Interaktion und mit einem RFID-Reader für die Karten. Die Getränkeausgabe soll symbolisch mit wenigen mechanischen Teilen angedeutet werden.</p>
+                <h3>Ergebnis</h3>
+                Entwickelt wurde das gefragte System mit einem auf dem Pi laufendem Webserver und User-Interaktion per Display und RFID-Reader und einem Servo zur symbolischen Darstellung der Getränkeausgabe.
+                Zur Nutzung des Systems muss der Pi wie folgt vernetzt werden: Das Display sowie das RFID-Modul (Verkabelung findet man <a href="http://funduino.de/index.php/3-programmieren/nr-19-rfid">hier</a>) müssen angeschlossen werden. Ausserdem muss das Pi an das gewünschte Netzwerk und an eine Stromquelle angeschlossen sein. Die nötige Software ist schon auf dem Pi bzw. auf dem MC, d.h. für eine Nutzung des Automaten muss nur unsere C++/Qt (PATH: TODO) executable ausgeführt werden. Um als Admin auf den Webserver zuzugreifen muss nur im Browser die IP des Pis im selben Netzwerk eingegeben werden. <br>
+                <a href="">DEAD Code Download</a>
+                <h3>Ausblick</h3>
+                Zukunftsträchtig wäre es, anstatt der RFID Karten Smartphones mit <i>Near Field Communication</i> (NFC) zur Nutzeridentifikation zu nutzen, eventuell in Kombination mit Bezahldiensten wie z.B. <i>Apple Pay</i> oder <i>Google Wallet</i>. <br>
+                Ausserdem macht eine Auslagerung des Systems Sinn, wenn mehrere Automaten genutzt werden wollen. So ist das gesamte System inkl. Datenbank nicht auf dem Automaten selbst.</section>
 
             <section id="Personen"><h2>Personen</h2>
 <div><img src="team.jpg" style="width:304px;height:228px; float:right;">
-            <p>PIC Jakob Schmid, Bachelor Angewandte Informatik <br>
+            <p>Jakob Schmid, Bachelor Angewandte Informatik <br>
                 Amos Treiber, Bachelor Angewandte Informatik <br> 
-                Betreuer: Felix Aller und Katja Mombauer</p></div></section>
+                Betreuer: Felix Aller und Katja Mombaur</p></div></section>
 
 
 <br><br><br>
@@ -43,29 +51,37 @@
 
             <section id="Praktikumsverlauf"><h2>Praktikumsverlauf</h2>
             <p><h3>Milestones</h3>
-                <h3>Verlauf</h3>
                 <h4>1. Arduino MC und RFID Modul</h4> 
                 <p>Zu Beginn galt es die Verbindung zwischen dem RFID-Modul (Modell RFID-RC522) und dem Raspberry Pi über einen Mikrocontroller herzustellen. Da sich die Lieferung des Raspberry Pi verzörgerte, wurde die Verbindung zunächst mit einem Laptop getestet. 
                 Hierzu wurde zuerst das RFID-Modul mit Hilfe von etwas Lötarbeit mit dem Arduino verbunden, die Übertragung zwischen Arduino und Laptop fand dann über serielle Schnittstelle(USB) statt. Bezogen auf das ganze Projekt wurde der Aufwand für diesen Milestone relativ exakt eingeschätzt. Der Softwareteil nahm sehr wenig Zeit in Anspruch, da der Beispielcode von <a href="http://funduino.de/index.php/3-programmieren/nr-19-rfid">funduino.de</a> nur leicht modifiziert werden musste. Der Hardwareteil gestaltete sich etwas aufwendiger, da zusätzlich provisorisch zu Testzwecken gelötet wurde und unsere Erfahrung mit Löten gering war. 
                 <h4>2. Raspberry Pi</h4>
-<p>Danach wollten wir uns dem Pi widmen. Als dieser da war konnten wir schnell das Betriebssystem Raspbian mit der für den Webserver nötigen Software installieren. Da der Pi aber sehr langsam ist entwickelten wir erst alles auf dem PC. Danach hatten wir ein paar Probleme mit dem Pi: Da wir uns entschieden hatten, die User-Interaktion mittels C++/Qt zu gestalten und diese schon mit Qt5 entwickelt hatten gestaltete es sich wegen der Größe der Qt-Bibliothek als schwierig, Qt auf dem Pi zu installieren. Eine größere SD-Karte war nötig, weswegen wir den Pi einer anderer Gruppe nahmen. Qt5 hätten wir auf dem Pi selbst kompilieren müssen (was sehr lange dauert), weswegen wir Qt4 installierten und einige Probleme hatten, von Qt5 auf Qt4 zu wechseln.
+<p>Danach wollten wir uns dem Pi widmen. Als dieser da war konnten wir schnell das Betriebssystem Raspbian mit der für den Webserver nötigen Software installieren und unsere entworfene Datenbank aufsetzen. Da der Pi aber sehr langsam ist entwickelten wir erst alles auf dem PC (siehe Abschnitt 3 und 4). Danach hatten wir ein paar Probleme mit dem Pi: Da wir uns entschieden hatten, die User-Interaktion mittels C++/Qt zu gestalten und diese schon mit Qt5 entwickelt hatten gestaltete es sich wegen der Größe der Qt-Bibliothek als schwierig, Qt auf dem Pi zu installieren. Eine größere SD-Karte war nötig, weswegen wir den Pi einer anderer Gruppe nahmen. Qt5 hätten wir auf dem Pi selbst kompilieren müssen (was sehr lange dauert), weswegen wir Qt4 installierten und einige Probleme hatten, von Qt5 auf Qt4 zu wechseln.
                 <h4>3. Webinterface</h4><br>
+                <p>Das Webinterface wurde klassisch mit PHP, MySQL und javascript/jQuery entwickelt. Zuerst war ein Login-System nötig, dabei nutzten wir das System von <a href="http://www.wikihow.com">Wiki-How</a>. Dann implementierten wir die Seiten, die eine Manipulation der Datenbanktabellen erlaubten. Weil keiner von uns Erfahrung damit hatte wurden wir mit den üblichen, kleineren Problemen der Webentwicklung konfrontiert. Diese liessen sich aber auch schnell wieder lösen. Das Grundgerüst war schnell entwickelt und alle Funktionen implementiert, da die Vorraussetzungen klar gegeben waren. Während des Praktikums fügten wir noch ein paar "nice-to-have" Funktionen ein (wie z.B., dass die Änderung eines Tabelleneintrags wieder entfernt wird, wenn der Admin diese nicht ändern will).
                 <h4>4. User-Interaktion</h4><br>
 <p>Der erste Ansatz war, da wir bisher bereits mit Websprachen gearbeitet hatten, auch die User-Schnittstelle am Automaten unter anderem mit Websprachen zu erstellen(z.B. mit Python für die serielle Schnittstelle und PHP/JS für die Darstellung). Diese Idee schien auch dadurch attraktiv, dass die User-Schnittstelle auf den ersten Blick wenig komplex wirkte und so eine Lösung, die eher "quick and dirty" war, naheliegend war. Bei genauerer Betrachtung stellte sich dies jedoch als wenig praktisch heraus, da eine sinnvolle Kommunikationsschnittstelle zwischen der Oberfläche (PHP/JS) und der dahinterliegenden Businesslogik (Python) fehlte.
 Um diese Probleme zu lösen, entschieden wir uns dafür, C++ mit Qt zu verwenden. Zusätzlich zur Möglichkeit einfach grafische Oberflächen zu erstellen bot Qt den Signal/Slot-Mechanismus an, der eine einfache Kommunikation zwischen Businesslogik und Oberfläche ermöglicht. Der zusätzliche Aufwand durch Einarbeitung in Qt und Portierung auf den Pi wurde durch die eben genannten Vorteile klar aufgewogen.
 </p>
-                <h4>5. Mock-Up</h4>Das Mock-Up besteht </p></section>
+                <h4>5. Mock-Up</h4>Wegen Zeitmangel am Ende des Projekts wurde entschieden, dass das Mock-Up aus nur einem Servo besteht, der über die <i>general purpose input/output</i> (GPIO) Pins des Pis angeschlossen ist. Dieser deutet symbolisch an, dass eine Getränkeausgabe stattfindet, indem er sich bewegt. Ein Problem, das wir nicht lösen konnten, ist, dass der Servo nach der initialisierung während das C++/Qt Programm läuft immer ein Geräusch von sich gibt (bzw. sich leicht bewegt). Die Ursache konnten wir auch nicht feststellen, da wir dafür einfachen C-Code der Library <a href="http://wiringpi.com/">wiringPi</a> nutzten und der C-Code an sich ohne Probleme ausgeführt wurde. Das Problem muss also seinen Ursprung in der Verwendung in C++/Qt haben.</p></section>
 
             <section id="Hardware"><h2>Hardware</h2>
-            <h3>Arduino Microcontroller</h3><br>
-            <h3>RFID-Modul</h3><br>
-            <h3>Raspberry Pi</h3><br>
-            <h3>Display</h3></section>
+            <h3>Arduino Microcontroller mit RFID-Modul</h3><img src="DSC_0057.JPG" style="width:304px;height:228px;"> <br>
+            Genutzt wird ein Funduino Uno Microcontroller mit dem Modell RFID-RC522 RFID Modul. Der Microcontroller kann per USB an einen PC angeschlossen werden und mittels des Moduls die RFID eines RFID-Tags seriell übertragen.
+            <br>
+            <h3>RFID-Tags</h3>
+            Mitgeliefert waren folgende RFID-Tags:<br>
+            <img src="DSC_0058.JPG" style="width:304px;height:228px;"><br>
+            Diese repräsentieren die RFID-Karten, mit denen sich die Nutzer identifizieren können.
+            <h3>Raspberry Pi</h3>
+            Das Raspberry Pi Modell B ist ein populärer Mini-Computer mit den für unser Projekt wichtigen USB- und HDMI-Anschlüssen und den GPIO Pins.
+            <img src="DSC_0061.JPG" style="width:304px;height:228px;"> 
+            <h3>Display</h3>
+            Das geplante Touch-Display war aufgrund von Lieferungsproblemen  nicht verfügbar. Genutzt wurde stattdessen ein ähnlich grosses Display ohne Touchfunktion mit USB-Maus zur Steuerung bzw. Simulation eines Touch-Inputs.</section>
 
             <section id="Software"><h2>Software</h2>
             <h3>Aufbau</h3>
             <img src="Struktur.jpg"></img> <br>
-            Im Zentrum steht die Datenbank. Diese Verwaltet den Login für die Admin-Schnittstelle und die Daten für den Mat-o-mat an sich. Die Datenbank für den Login ist aus unten genanntem Tutorial entnommen. Die Mat-o-mat Datenbank ist wie folgt aufgebaut:
+            Im Zentrum steht die MySQL-Datenbank. Diese Verwaltet den Login für die Admin-Schnittstelle und die Daten für den Mat-O-Mat an sich. Die Datenbank für den Login ist aus unten genanntem Tutorial entnommen. Die "matomat" Datenbank ist wie folgt aufgebaut:
             <pre class="language-sql"><code class="language-sql">
 CREATE TABLE transactions ( 
     Username VARCHAR(255) NOT NULL, 
@@ -73,7 +89,8 @@ CREATE TABLE transactions (
     ArticleName VARCHAR(255),
     Payed FLOAT UNSIGNED,
     Time DATETIME, 
-    CONSTRAINT pk_Transaction PRIMARY KEY (Username, ArticleID, Time));
+    CONSTRAINT pk_Transaction
+    PRIMARY KEY (Username, ArticleID, Time));
 CREATE TABLE stock(
     ArticleID INT NOT NULL AUTO_INCREMENT, 
     ArticleName VARCHAR(255) NOT NULL, 
@@ -89,7 +106,8 @@ CREATE TABLE adminaction (
     Col VARCHAR(255),
     OldValue VARCHAR(255),
     NewValue VARCHAR(255) NOT NULL,
-    CONSTRAINT pk_Adminaction PRIMARY KEY (AdminName, Action, Time));
+    CONSTRAINT pk_Adminaction
+    PRIMARY KEY (AdminName, Action, Time));
 CREATE TABLE log (
     RFID VARCHAR(255) NOT NULL,
     Time DATETIME,
@@ -110,7 +128,7 @@ CREATE TABLE users(
             <h5>log</h5>
             <p>Hier ist ein Eintrag vorhanden, wenn eine unbekannte bzw. neue RFID-Karte an den Automaten gehalten wurde. Ein Eintrag besteht aus der RFID und dem Zeitpunkt. Wird über das Admin-Interface eine dieser RFIDs einem (eventuell neuem) Nutzer zugewiesen so wird der Eintrag gelöscht. Es werden also nur noch nicht verwendete RFIDs angezeigt.</p>
             <h5>users</h5>
-            <p>Hier werden die Nutzer unseres Automatensystems gespeichert. Damit sich nicht jeder Nutzer seine RFID merken muss und da man so eine RFID-karte auch mal verlieren kann wird er durch einen selbst bestimmten Usernamen eindeutig identifiziert. In jedem Eintrag steht der aktuelle Euro-Betrag und die RFID der Karte des Nutzers.</p>
+            <p>Hier werden die Nutzer unseres Automatensystems gespeichert. Damit sich nicht jeder Nutzer seine RFID merken muss und da man so eine RFID-Karte auch mal verlieren kann wird er durch einen selbst bestimmten Usernamen eindeutig identifiziert. In jedem Eintrag steht der aktuelle Euro-Betrag und die RFID der Karte des Nutzers.</p>
             <h3>Admin-Interface</h3>
             <p>Auf dem Pi soll ein Webserver laufen, über dem ein Administrator die Nutzer des Matomats einfach verwalten kann. Es wird das <i>Apache HTTP Server Project</i> in Verbindung mit HTML, PHP und javascript bzw. jQuery genutzt.</p>
             <h4>Sicherheit</h4>
@@ -131,9 +149,9 @@ sec_session_start();
     &lt;/head&gt;
     &lt;body&gt;
         &lt;?php if (login_check($mysqli) == true) : ?&gt;
-            LOGGED IN HTML
+            LOGGED IN CODE
         &lt;?php else : ?&gt;
-            NOT LOGGED IN HTML
+            NOT LOGGED IN CODE
         &lt;?php endif; ?&gt;
     &lt;/body&gt;
 &lt;/html&gt;
@@ -178,6 +196,8 @@ sec_session_start();
         <p>Es werden alle geschehenen Admin-Aktionen der Zeit nach geordnet angezeigt. Da dies ziemlich viele Einträge sind werden nur die ersten 25 Ergebnisse angezeigt. Rechts befindet sich eine Eingabe, mit der nach Einträgen von Admins, Ziele, Aktionen, Einträgen und/oder Zeiten gesucht werden kann. Gesucht wird beim Admin und bei Zeiten nach anfänglicher Übereinstimmung, bei Zielen und Einträgen nach Ergebnissen, die den Such-String enthalten und bei den Aktionen exakt (aber <i>case insensitive</i>) nach den möglichen Aktionen "CREATE", "CHANGE" und "DELETE".</p>
         <h5>Register new Admin</h5>
         <i>Use-Case 9</i>
+        <p> Vom Wiki-How Login-System übernommen</p>
+        
 <h3>User-Interface</h3>
 <p>Auf dem Pi wird eine Qt/C++-Anwendung ausgeführt, die verschiedene Menüs auf dem Display anzeigt, welche auf Nutzereingaben via Touch-Display oder RFID-Reader reagiert. Bei den entsprechenden Eingaben greift die Anwenung außerdem auf die Datenbank zu und steuert den Servo (siehe Aufbau).</p>
 <h4>Menüs</h4>
