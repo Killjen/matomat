@@ -59,11 +59,12 @@
                 <h4>2. Raspberry Pi</h4>
 <p>Danach wollten wir uns dem Pi widmen. Als dieser da war konnten wir schnell das Betriebssystem Raspbian mit der für den Webserver nötigen Software installieren und unsere entworfene Datenbank aufsetzen. Da der Pi aber sehr langsam ist entwickelten wir erst alles auf dem PC (siehe Abschnitt 3 und 4). Ein weiteres Problem war, dass der Pi keinen Timer hat und deshalb die Zeit immer aus dem Netz beziehen muss (und dieses teilweise nicht vorhanden war). Die Zeitangabe ist wichtig, da die Logs die Systemzeit des Pis nutzen.</p>
                 <h4>3. Webinterface</h4>
-                <p>Das Webinterface wurde klassisch mit PHP, MySQL und javascript/jQuery entwickelt. Zuerst war ein Login-System nötig, dabei nutzten wir <a href="http://www.wikihow.com/Create-a-Secure-Login-Script-in-PHP-and-MySQL">diese Anleitung </a> von <a href="http://www.wikihow.com">Wiki-How</a>. Dann implementierten wir die Seiten, die eine Manipulation der Datenbanktabellen erlaubten. Zur Darstellung der Tabellen nutzten wir <a href="http://johnsardine.com/freebies/dl-html-css/simple-little-tab/">diese Vorlage</a>. Weil keiner von uns Erfahrung mit PHP und js/Query hatte wurden wir mit den üblichen, kleineren Problemen der Webentwicklung konfrontiert. Diese liessen sich aber auch recht einfach lösen. So gab es beispielsweise das Hindernis, dass in PHP die Eigenschaft <i>isempty()</i> einer Variable auch wahr ist, wenn sie 0 ist. Mit dem <i>===</i> Operator, der den Typ erzwingt, konnten wir das Problem lösen. Das Grundgerüst war schnell entwickelt und alle Funktionen implementiert, da die Vorraussetzungen klar gegeben waren.
+                <p>Das Webinterface wurde klassisch mit PHP, MySQL und javascript/jQuery entwickelt. Zuerst war ein Login-System nötig, dabei nutzten wir <a href="http://www.wikihow.com/Create-a-Secure-Login-Script-in-PHP-and-MySQL">diese Anleitung </a> von <a href="http://www.wikihow.com">Wiki-How</a>. Dann implementierten wir die Seiten, die eine Manipulation der Datenbanktabellen erlaubten. Zur Darstellung der Tabellen nutzten wir <a href="http://johnsardine.com/freebies/dl-html-css/simple-little-tab/">diese Vorlage</a>. Weil keiner von uns Erfahrung mit PHP und js/Query hatte wurden wir mit den üblichen, kleineren Problemen der Webentwicklung konfrontiert. Diese liessen sich aber auch recht einfach lösen. So gab es beispielsweise das Hindernis, dass in PHP die Eigenschaft <i>isempty()</i> einer Variable auch wahr ist, wenn sie 0 ist. Mit dem <i>"==="</i> Operator, der den Typ erzwingt, konnten wir das Problem lösen. Das Grundgerüst war schnell entwickelt und alle Funktionen implementiert, da die Vorraussetzungen klar gegeben waren.
                 Eine wiederkehrende Frustration war die korrekte Darstellung mithilfe von CSS und unterschiedliche Darstellungen/Funktionalitäten der Browser (z.B. gab das js-Attribut <i>object.innerText</i> verschiedene Ausgaben bei Firefox und Chrome). Während des Praktikums fügten wir noch ein paar "nice-to-have" Funktionen ein (wie z.B., dass die Änderung eines Tabelleneintrags wieder entfernt wird, wenn der Admin diese nicht ändern will).
-                <h4>4. User-Interaktion</h4>
+                <h4>4. User-Interface</h4>
 <p>Der erste Ansatz war, da wir bisher bereits mit Websprachen gearbeitet hatten, auch die User-Schnittstelle am Automaten unter anderem mit Websprachen zu erstellen(z.B. mit Python für die serielle Schnittstelle und PHP/JS für die Darstellung). Diese Idee schien auch dadurch attraktiv, dass die User-Schnittstelle auf den ersten Blick wenig komplex wirkte und so eine Lösung, die eher "quick and dirty" war, naheliegend war. Bei genauerer Betrachtung stellte sich dies jedoch als wenig praktisch heraus, da eine sinnvolle Kommunikationsschnittstelle zwischen der Oberfläche (PHP/JS) und der dahinterliegenden Businesslogik (Python) fehlte.
-Um diese Probleme zu lösen, entschieden wir uns dafür, C++ mit der Library <a href="http://www.qt.io">Qt</a> zu verwenden. Zusätzlich zur Möglichkeit, einfach grafische Oberflächen zu erstellen, bot Qt den Signal/Slot-Mechanismus an, der eine einfache Kommunikation zwischen Businesslogik und Oberfläche ermöglicht. Der zusätzliche Aufwand durch Einarbeitung in Qt und Portierung auf den Pi wurde durch die eben genannten Vorteile klar aufgewogen. Nach der Entwicklung selbst hatten wir ein paar Probleme mit dem Pi: Da wir schon mit Qt5 entwickelt hatten gestaltete es sich wegen der Größe der Qt-Bibliothek als schwierig, Qt auf dem Pi zu installieren. Eine größere SD-Karte war nötig, weswegen wir den Pi einer anderer Gruppe nahmen. Qt5 hätten wir auf dem Pi selbst kompilieren müssen (was sehr lange dauert), weswegen wir Qt4 installierten und einige Portierungs-Probleme beim Wechsel von Qt5 auf Qt4.
+Um diese Probleme zu lösen, entschieden wir uns dafür, C++ mit der Library <a href="http://www.qt.io">Qt</a> zu verwenden. Zusätzlich zur Möglichkeit, einfach grafische Oberflächen zu erstellen, bot Qt den Signal/Slot-Mechanismus an, der eine einfache Kommunikation zwischen Businesslogik und Oberfläche ermöglicht. Der erhöhte Aufwand durch Einarbeitung in Qt und Portierung auf den Pi wurde durch die eben genannten Vorteile klar aufgewogen. Nach der Entwicklung selbst hatten wir ein paar Probleme mit dem Pi: Da wir schon mit Qt5 entwickelt hatten gestaltete es sich wegen der Größe der Qt-Bibliothek als schwierig, Qt auf dem Pi zu installieren. Eine größere SD-Karte war nötig, weswegen wir den Pi einer anderer Gruppe nahmen. Qt5 hätten wir auf dem Pi selbst kompilieren müssen (was sehr lange dauert), weswegen wir Qt4 installierten und einige Portierungs-Probleme beim Wechsel von Qt5 auf Qt4 hatten. <br>
+Ein weiteres Problem war das Auslesen der RFIDs durch ein QSerialPort Objekt. Das <i>readyRead</i>-Signal wird nicht rekursiv emmitiert, d.h. neue Daten an der seriellen Schnittstelle werden nicht signalisiert, solange ein Slot aktiv ist der durch ein vorheriges Aussenden von readyRead 'gestartet' wurde. Dies führte zu einer Art Stau an der seriellen Schnittstelle, was dazu führte, dass beim heranhalten von neuen RFID-Karten immer erst die alten RFIDs eingelesen wurden. Durch ein erneutes Einlesen am Ende des mit dem readyRead-Signal verbundenen Slots konnte dieses Problem dann auch gelöst werden.
 </p>
                 <h4>5. Mock-Up</h4>Wegen Zeitmangel am Ende des Projekts wurde entschieden, dass das Mock-Up aus nur einem Servo besteht, der über die <i>general purpose input/output</i> (GPIO) Pins des Pis angeschlossen ist. Dieser deutet symbolisch an, dass eine Getränkeausgabe stattfindet, indem er sich bewegt. Ein Problem, das wir nicht lösen konnten, ist, dass der Servo nach der initialisierung während das C++/Qt Programm läuft immer ein Geräusch von sich gibt (bzw. sich leicht bewegt). Die Ursache konnten wir auch nicht feststellen, da wir dafür einfachen C-Code der Library <a href="http://wiringpi.com/">wiringPi</a> nutzten und der C-Code an sich ohne Probleme ausgeführt wurde. Das Problem muss also seinen Ursprung in der Verwendung in C++/Qt haben.</p></section>
 
@@ -133,8 +134,40 @@ CREATE TABLE users(
             <p>Hier werden die Nutzer unseres Automatensystems gespeichert. Damit sich nicht jeder Nutzer seine RFID merken muss und da man so eine RFID-Karte auch mal verlieren kann wird er durch einen selbst bestimmten Usernamen eindeutig identifiziert. In jedem Eintrag steht der aktuelle Euro-Betrag und die RFID der Karte des Nutzers.</p>
             <h3>MC-Software</h3>
             Da unsere Spezifikation nur eine Ausgabe der RFID beim Ranhalten des Tags an das Modul verlangt nutzen wir den Code von der <a href="http://funduino.de/index.php/3-programmieren/nr-19-rfid">Funduino RFID Anleitung</a>, die die <a href="https://github.com/miguelbalboa/rfid">MFRC522</a> Library nutzt.
-            Der Code:
-            TODO CODE
+            Der leicht modifizierte Code:
+            <pre class="code">
+<code>
+#include &lt;SPI.h&gt;
+#include &lt;MFRC522.h&gt;
+
+#define SS_PIN 10
+#define RST_PIN 9
+
+MFRC522 mfrc522(SS_PIN, RST_PIN);
+
+void setup()
+{
+	Serial.begin(9600);
+	SPI.begin();
+	mfrc522.PCD_Init();
+}
+
+void loop()
+{
+	if ( ! mfrc522.PICC_IsNewCardPresent()) {
+		return;
+	}
+	if ( ! mfrc522.PICC_ReadCardSerial()){
+		return;
+	}
+	Serial.print(" ");
+
+	for (byte i = 0; i &lt; mfrc522.uid.size; i++){
+		Serial.print(mfrc522.uid.uidByte[i], HEX);
+	}
+	Serial.print(" ");
+}</code>
+		</pre>
             <h3>Admin-Interface</h3>
             <p>Auf dem Pi soll ein Webserver laufen, über dem ein Administrator die Nutzer des Matomats einfach verwalten kann. Es wird das <i>Apache HTTP Server Project</i> in Verbindung mit HTML, PHP und javascript bzw. jQuery genutzt.</p>
             <h4>Sicherheit</h4>
