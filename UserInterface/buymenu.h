@@ -38,7 +38,8 @@ private:
     //We are using pointers here since most QObjects can't be copied and therefore not added to a container
     QList<QPushButton*> _buttonList;
     QList<QLabel*>      _labelList;
-
+    QList<bool>         _resizableList;
+    bool eventFilter(QObject *, QEvent *);
     void fillLayout();
 };
 

@@ -33,8 +33,10 @@
                 funktioniert zusätzlich als Automat mit einem Touchscreen zur Interaktion und mit einem RFID-Reader für die Karten. Die Getränkeausgabe soll symbolisch mit wenigen mechanischen Teilen angedeutet werden.</p>
                 <h3>Ergebnis</h3>
                 Entwickelt wurde das gefragte System mit einem auf dem Pi laufendem Apache-Webserver und User-Interaktion per Display und RFID-Reader und einem Servo zur symbolischen Darstellung der Getränkeausgabe.
-                Zur Nutzung des Systems muss der Pi wie folgt vernetzt werden: Das Display sowie das RFID-Modul (Verkabelung findet man <a href="http://funduino.de/index.php/3-programmieren/nr-19-rfid">hier</a>) müssen angeschlossen werden. Ausserdem muss das Pi an das gewünschte Netzwerk und an eine Stromquelle angeschlossen sein. Die nötige Software ist schon auf dem Pi bzw. auf dem MC, d.h. für eine Nutzung des Automaten muss nur unsere C++/Qt (PATH: TODO) executable ausgeführt werden. Um als Admin auf den Webserver zuzugreifen muss nur im Browser die IP des Pis im selben Netzwerk eingegeben werden. <br>
-                <a href="">DEAD Code Download</a>
+                Zur Nutzung des Systems muss der Pi wie folgt vernetzt werden: Das Display sowie das RFID-Modul (Verkabelung findet man <a href="http://funduino.de/index.php/3-programmieren/nr-19-rfid">hier</a>) müssen angeschlossen werden. Ausserdem muss das Pi an das gewünschte Netzwerk und an eine Stromquelle angeschlossen sein. Die nötige Software ist schon auf dem Pi bzw. auf dem MC, d.h. für eine Nutzung des Automaten muss nur unsere C++/Qt executable ausgeführt werden ("Matomat" auf dem Desktop). Um als Admin auf den Webserver zuzugreifen muss nur im Browser die IP des Pis im selben Netzwerk eingegeben werden. <br>
+                <a href="">DEAD Code Download</a> <br>
+                <h4>Aufbau</h4>
+            <img src="Struktur.jpg"></img> <br>
                 <h3>Ausblick</h3>
                 Zukunftsträchtig wäre es, anstatt der RFID Karten Smartphones mit <i>Near Field Communication</i> (NFC) zur Nutzeridentifikation zu nutzen, eventuell in Kombination mit Bezahldiensten wie z.B. <i>Apple Pay</i> oder <i>Google Wallet</i>. <br>
                 Ausserdem macht eine Auslagerung des Systems Sinn, wenn mehrere Automaten genutzt werden wollen. So ist das gesamte System inkl. Datenbank nicht auf dem Automaten selbst.</section>
@@ -55,13 +57,13 @@
                 <p>Zu Beginn galt es die Verbindung zwischen dem RFID-Modul (Modell RFID-RC522) und dem Raspberry Pi über einen Mikrocontroller herzustellen. Da sich die Lieferung des Raspberry Pi verzörgerte, wurde die Verbindung zunächst mit einem Laptop getestet. 
                 Hierzu wurde zuerst das RFID-Modul mit Hilfe von etwas Lötarbeit mit dem Arduino verbunden, die Übertragung zwischen Arduino und Laptop fand dann über serielle Schnittstelle(USB) statt. Bezogen auf das ganze Projekt wurde der Aufwand für diesen Milestone relativ exakt eingeschätzt. Der Softwareteil nahm sehr wenig Zeit in Anspruch, da der Beispielcode von <a href="http://funduino.de/index.php/3-programmieren/nr-19-rfid">funduino.de</a> nur leicht modifiziert werden musste. Der Hardwareteil gestaltete sich etwas aufwendiger, da zusätzlich provisorisch zu Testzwecken gelötet wurde und unsere Erfahrung mit Löten gering war. 
                 <h4>2. Raspberry Pi</h4>
-<p>Danach wollten wir uns dem Pi widmen. Als dieser da war konnten wir schnell das Betriebssystem Raspbian mit der für den Webserver nötigen Software installieren und unsere entworfene Datenbank aufsetzen. Da der Pi aber sehr langsam ist entwickelten wir erst alles auf dem PC (siehe Abschnitt 3 und 4).
+<p>Danach wollten wir uns dem Pi widmen. Als dieser da war konnten wir schnell das Betriebssystem Raspbian mit der für den Webserver nötigen Software installieren und unsere entworfene Datenbank aufsetzen. Da der Pi aber sehr langsam ist entwickelten wir erst alles auf dem PC (siehe Abschnitt 3 und 4). Ein weiteres Problem war, dass der Pi keinen Timer hat und deshalb die Zeit immer aus dem Netz beziehen muss (und dieses teilweise nicht vorhanden war). Die Zeitangabe ist wichtig, da die Logs die Systemzeit des Pis nutzen.</p>
                 <h4>3. Webinterface</h4>
-                <p>Das Webinterface wurde klassisch mit PHP, MySQL und javascript/jQuery entwickelt. Zuerst war ein Login-System nötig, dabei nutzten wir das System von <a href="http://www.wikihow.com">Wiki-How</a>. Dann implementierten wir die Seiten, die eine Manipulation der Datenbanktabellen erlaubten. Zur Darstellung der Tabellen nutzten wir <a href="http://johnsardine.com/freebies/dl-html-css/simple-little-tab/">diese Vorlage</a>. Weil keiner von uns Erfahrung mit PHP und js/Query hatte wurden wir mit den üblichen, kleineren Problemen der Webentwicklung konfrontiert. Diese liessen sich aber auch recht einfach lösen. Das Grundgerüst war schnell entwickelt und alle Funktionen implementiert, da die Vorraussetzungen klar gegeben waren.
+                <p>Das Webinterface wurde klassisch mit PHP, MySQL und javascript/jQuery entwickelt. Zuerst war ein Login-System nötig, dabei nutzten wir <a href="http://www.wikihow.com/Create-a-Secure-Login-Script-in-PHP-and-MySQL">diese Anleitung </a> von <a href="http://www.wikihow.com">Wiki-How</a>. Dann implementierten wir die Seiten, die eine Manipulation der Datenbanktabellen erlaubten. Zur Darstellung der Tabellen nutzten wir <a href="http://johnsardine.com/freebies/dl-html-css/simple-little-tab/">diese Vorlage</a>. Weil keiner von uns Erfahrung mit PHP und js/Query hatte wurden wir mit den üblichen, kleineren Problemen der Webentwicklung konfrontiert. Diese liessen sich aber auch recht einfach lösen. So gab es beispielsweise das Hindernis, dass in PHP die Eigenschaft <i>isempty()</i> einer Variable auch wahr ist, wenn sie 0 ist. Mit dem <i>===</i> Operator, der den Typ erzwingt, konnten wir das Problem lösen. Das Grundgerüst war schnell entwickelt und alle Funktionen implementiert, da die Vorraussetzungen klar gegeben waren.
                 Eine wiederkehrende Frustration war die korrekte Darstellung mithilfe von CSS und unterschiedliche Darstellungen/Funktionalitäten der Browser (z.B. gab das js-Attribut <i>object.innerText</i> verschiedene Ausgaben bei Firefox und Chrome). Während des Praktikums fügten wir noch ein paar "nice-to-have" Funktionen ein (wie z.B., dass die Änderung eines Tabelleneintrags wieder entfernt wird, wenn der Admin diese nicht ändern will).
                 <h4>4. User-Interaktion</h4>
 <p>Der erste Ansatz war, da wir bisher bereits mit Websprachen gearbeitet hatten, auch die User-Schnittstelle am Automaten unter anderem mit Websprachen zu erstellen(z.B. mit Python für die serielle Schnittstelle und PHP/JS für die Darstellung). Diese Idee schien auch dadurch attraktiv, dass die User-Schnittstelle auf den ersten Blick wenig komplex wirkte und so eine Lösung, die eher "quick and dirty" war, naheliegend war. Bei genauerer Betrachtung stellte sich dies jedoch als wenig praktisch heraus, da eine sinnvolle Kommunikationsschnittstelle zwischen der Oberfläche (PHP/JS) und der dahinterliegenden Businesslogik (Python) fehlte.
-Um diese Probleme zu lösen, entschieden wir uns dafür, C++ mit der Library Qt zu verwenden. Zusätzlich zur Möglichkeit, einfach grafische Oberflächen zu erstellen, bot Qt den Signal/Slot-Mechanismus an, der eine einfache Kommunikation zwischen Businesslogik und Oberfläche ermöglicht. Der zusätzliche Aufwand durch Einarbeitung in Qt und Portierung auf den Pi wurde durch die eben genannten Vorteile klar aufgewogen. Nach der Entwicklung selbst hatten wir ein paar Probleme mit dem Pi: Da wir schon mit Qt5 entwickelt hatten gestaltete es sich wegen der Größe der Qt-Bibliothek als schwierig, Qt auf dem Pi zu installieren. Eine größere SD-Karte war nötig, weswegen wir den Pi einer anderer Gruppe nahmen. Qt5 hätten wir auf dem Pi selbst kompilieren müssen (was sehr lange dauert), weswegen wir Qt4 installierten und einige Portierungs-Probleme beim Wechsel von Qt5 auf Qt4.
+Um diese Probleme zu lösen, entschieden wir uns dafür, C++ mit der Library <a href="http://www.qt.io">Qt</a> zu verwenden. Zusätzlich zur Möglichkeit, einfach grafische Oberflächen zu erstellen, bot Qt den Signal/Slot-Mechanismus an, der eine einfache Kommunikation zwischen Businesslogik und Oberfläche ermöglicht. Der zusätzliche Aufwand durch Einarbeitung in Qt und Portierung auf den Pi wurde durch die eben genannten Vorteile klar aufgewogen. Nach der Entwicklung selbst hatten wir ein paar Probleme mit dem Pi: Da wir schon mit Qt5 entwickelt hatten gestaltete es sich wegen der Größe der Qt-Bibliothek als schwierig, Qt auf dem Pi zu installieren. Eine größere SD-Karte war nötig, weswegen wir den Pi einer anderer Gruppe nahmen. Qt5 hätten wir auf dem Pi selbst kompilieren müssen (was sehr lange dauert), weswegen wir Qt4 installierten und einige Portierungs-Probleme beim Wechsel von Qt5 auf Qt4.
 </p>
                 <h4>5. Mock-Up</h4>Wegen Zeitmangel am Ende des Projekts wurde entschieden, dass das Mock-Up aus nur einem Servo besteht, der über die <i>general purpose input/output</i> (GPIO) Pins des Pis angeschlossen ist. Dieser deutet symbolisch an, dass eine Getränkeausgabe stattfindet, indem er sich bewegt. Ein Problem, das wir nicht lösen konnten, ist, dass der Servo nach der initialisierung während das C++/Qt Programm läuft immer ein Geräusch von sich gibt (bzw. sich leicht bewegt). Die Ursache konnten wir auch nicht feststellen, da wir dafür einfachen C-Code der Library <a href="http://wiringpi.com/">wiringPi</a> nutzten und der C-Code an sich ohne Probleme ausgeführt wurde. Das Problem muss also seinen Ursprung in der Verwendung in C++/Qt haben.</p></section>
 
@@ -74,14 +76,13 @@ Um diese Probleme zu lösen, entschieden wir uns dafür, C++ mit der Library Qt 
             <img src="DSC_0058.JPG" style="width:304px;height:228px;"><br>
             Diese repräsentieren die RFID-Karten, mit denen sich die Nutzer identifizieren können.
             <h3>Raspberry Pi</h3>
-            Das Raspberry Pi Modell B ist ein populärer Mini-Computer mit den für unser Projekt wichtigen USB- und HDMI-Anschlüssen und den GPIO Pins.
             <img src="DSC_0061.JPG" style="width:304px;height:228px;"> <br>
+            Das Raspberry Pi Modell B ist ein populärer Mini-Computer mit den für unser Projekt wichtigen USB- und HDMI-Anschlüssen und den GPIO Pins.
             <h3>Display</h3>
             Das geplante Touch-Display war aufgrund von Lieferungsproblemen  nicht verfügbar. Genutzt wurde stattdessen ein ähnlich grosses Display ohne Touchfunktion mit USB-Maus zur Steuerung bzw. Simulation eines Touch-Inputs.</section>
 
             <section id="Software"><h2>Software</h2>
-            <h3>Aufbau</h3>
-            <img src="Struktur.jpg"></img> <br>
+            <h3>Datenbank</h3>
             Im Zentrum steht die MySQL-Datenbank. Diese Verwaltet den Login für die Admin-Schnittstelle und die Daten für den Mat-O-Mat an sich. Die Datenbank für den Login ist aus unten genanntem Tutorial entnommen. Die "matomat" Datenbank ist wie folgt aufgebaut:
             <pre class="language-sql"><code class="language-sql">
 CREATE TABLE transactions ( 
@@ -229,7 +230,13 @@ Das UnknownIDMenu kann durch einen <i>OK</i>-Button oder das halten einer andere
         
     </section>
           <section id="Quellen"><h2>Quellen</h2>
-            <p>In diesem Projekt wurden zustätzlich folgende Quellen verwendet:</p></section>
+            <p>In diesem Projekt wurden folgende Quellen verwendet:
+                <ul>
+                    <li> <a href="http://funduino.de/index.php/3-programmieren/nr-19-rfid">Funduino RFID-Modul Tutorial (Aufbau und Code)</a> mit der <a href="https://github.com/miguelbalboa/rfid">MFRC522 Library</a></li>
+                    <li> <a href="http://www.wikihow.com/Create-a-Secure-Login-Script-in-PHP-and-MySQL">Secure Login Script von Wikihow</a></li>
+                    <li> <a href="http://johnsardine.com/freebies/dl-html-css/simple-little-tab/">CSS Tabellen Vorlage</a></li>
+                    <li> <a href="http://wiringpi.com/">wiringPi C Library für GPIO-Ansteuerung</a></li>
+                    <li> <a href="http://www.qt.io">Qt Library</a></li></ul></p></section>
         </div>
 
         <div id="footer">

@@ -9,14 +9,9 @@ sec_session_start();
 <body>
         <?php if (login_check($mysqli) == true) : ?>
     	<?php
-    	$servername = "localhost";
-    	$dbusername   = "matomat";
-    	$dbpassword = "matomat94";
-    	$dbname     = "matomat";
+    	$username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING);
 
-        $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING);
-
-    	$conn = new mysqli($servername, $dbusername, $dbpassword, $dbname);
+    	$conn = $mMysqli;
     	//catch failed connections
     	if($conn->connect_error ){
     	    die("Couldn't connect to db: " . $conn->connect_error);

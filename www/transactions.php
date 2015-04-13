@@ -52,11 +52,7 @@ sec_session_start();
                                 <th>Time</th>
                             </tr>
                     <?php
-                    $servername = "localhost";
-                    $username   = "matomat";
-                    $dbpassword = "matomat94";
-                    $dbname     = "matomat";
-                    $conn = new mysqli($servername, $username, $dbpassword, $dbname);
+                    $conn = $mMysqli;
                     $transactions_username = filter_input(INPUT_POST, 'transactions_username', FILTER_SANITIZE_STRING);
                     $transactions_time = filter_input(INPUT_POST, 'transactions_time', FILTER_SANITIZE_STRING);
                     //catch failed connections

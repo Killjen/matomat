@@ -8,16 +8,12 @@ include_once 'functions.php';
 
 sec_session_start(); // Our custom secure way of starting a PHP session.
 
-$servername = "localhost";
-$name   = "matomat";
-$dbpassword   = "matomat94";
-$dbname     = "matomat";
 
 if (login_check($mysqli) == true) {
     if (isset($_POST['username']) and (isset($_POST['newusername']) or isset($_POST['balance']) or isset($_POST['userid']) or isset($_POST['fromLog']))) {
         
 
-        $conn = new mysqli($servername, $name, $dbpassword, $dbname);
+        $conn = $mMysqli;
 
         
 
